@@ -67,6 +67,7 @@ public class CustomerDialogue : FluentScript
     public override void OnFinish()
     {
 		EnablePlayerMovement();
+		GetComponentInParent<CustomerAI>().LeaveQueue();
         base.OnFinish();
     }
 
