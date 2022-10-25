@@ -322,6 +322,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c78e3a09ee486864382661c6035fc1bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  randomFood: 1
+  randomDrink: 1
   drink: 2
   food: 2
 --- !u!114 &474733306

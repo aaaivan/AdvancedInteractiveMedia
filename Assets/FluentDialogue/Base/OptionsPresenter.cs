@@ -86,6 +86,11 @@ namespace Fluent
                     {
                         SelectOption(option);
                     });
+
+					if(dialogOptionItem.transform.parent.childCount == 1)
+					{
+						dialogOptionItem.GetComponentInChildren<Button>().Select();
+					}
                 }
                 else
                 {

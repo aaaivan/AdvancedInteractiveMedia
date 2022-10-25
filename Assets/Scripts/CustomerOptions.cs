@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class CustomerOptions : MonoBehaviour
 {
+	[SerializeField]
+	bool randomFood = false;
+	[SerializeField]
+	bool randomDrink = false;
+
 	// Drinks
 	List<string> drinkNames = new List<string>{"Water", "Coke", "Lemonade", "Milkshake"};
 	public enum Drink
@@ -34,14 +39,31 @@ public class CustomerOptions : MonoBehaviour
     Food food = Food.Burger;
     public Food FoodItem => food;
 
-    public bool WantsToOrder()
+	private void Awake()
+	{
+		if(randomFood)
+		{
+			food = (Food)Random.Range(0, (int)Food.NONE);
+		}
+		if(randomDrink)
+		{
+			drink = (Drink)Random.Range(0, (int)Drink.NONE);
+		}
+	}
+
+	public bool WantsToOrder()
     {
         return DrinkItem != Drink.NONE || FoodItem != Food.NONE;
     }
 
-	public string FoodNameGet()
+	public string FoodNameGet(bool plural = false)
 	{
-		return food != Food.NONE ? foodNames[(int)food] : "";
+		string result = food != Food.NONE ? foodNames[(int)food] : "";
+		if(result != "" && plural)
+		{
+			result = result + "s";
+		}
+		return result;
 	}
 
 	public string DrinkNameGet()

@@ -35,7 +35,8 @@ public class CustomerDialogue : FluentScript
 	{
 		FirstPersonController fpc = InputsManager.Instance.firstPersonController;
 		GameObject player = fpc.gameObject;
-		StarterAssetsInputs inputs = player.GetComponent<StarterAssetsInputs>(); if (Input.mousePresent)
+		StarterAssetsInputs inputs = player.GetComponent<StarterAssetsInputs>();
+		if (Input.mousePresent)
 		{
 			Cursor.lockState = CursorLockMode.Locked;
 			Cursor.visible = false;
@@ -80,7 +81,7 @@ public class CustomerDialogue : FluentScript
 					Do(() => SetCustomerSpeaking()) *
 					Write("I don't really feel like eating anything. Can I just have some " + customerOptions.DrinkNameGet()).WaitForButton() *
 					Do(() => SetWaiterSpeaking()) *
-					Write("Sure!")) *
+					Write("Sure!").WaitForButton()) *
 				If(() => customerOptions.FoodNameGet() != "",
 					Do(() => SetCustomerSpeaking()) *
 					Write("Yes, can I have a " + customerOptions.FoodNameGet() + ", please?").WaitForButton() *
@@ -90,19 +91,20 @@ public class CustomerDialogue : FluentScript
 						Do(() => SetCustomerSpeaking()) *
 						Write(customerOptions.DrinkNameGet() + ", please.").WaitForButton() *
 						Do(() => SetWaiterSpeaking()) *
-						Write("No problem!")
+						Write("No problem!").WaitForButton()
 					)
 				)*
 				Do(() => SetWaiterSpeaking()) *
+				Write(0f, "") *
 				Show() *
 				Options(
-					Option("Here is your order.") *
+					Option("> Here is your order.") *
 						Write("Here is your order.").WaitForButton()*
 						Do(() => SetCustomerSpeaking()) *
 						Write("Thank you.").WaitForButton() *
 						End() *
-					Option("Sorry, we ran out of " + (customerOptions.FoodNameGet() == "" ? customerOptions.DrinkNameGet() : customerOptions.FoodNameGet()) + ".") *
-						Write("Sorry, we ran out of " + (customerOptions.FoodNameGet() == "" ? customerOptions.DrinkNameGet() : customerOptions.FoodNameGet()) + ".").WaitForButton() *
+					Option("> Sorry, we ran out of " + (customerOptions.FoodNameGet(true) == "" ? customerOptions.DrinkNameGet() : customerOptions.FoodNameGet(true)) + ".") *
+						Write("Sorry, we ran out of " + (customerOptions.FoodNameGet(true) == "" ? customerOptions.DrinkNameGet() : customerOptions.FoodNameGet(true)) + ".").WaitForButton() *
 						Do(() => SetCustomerSpeaking()) *
 						Write("This is ridicolous!").WaitForButton() *
 						End()
