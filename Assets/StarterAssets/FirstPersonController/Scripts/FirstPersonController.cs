@@ -277,7 +277,7 @@ namespace StarterAssets
 
 				Ray ray = Camera.main.ScreenPointToRay(screencenterPoint);
 				//do the raycast specifying the mask
-				if (Physics.Raycast(ray, out RaycastHit hit, 10, layer_mask))
+				if (Physics.Raycast(ray, out RaycastHit hit, 3, layer_mask))
 				{
 					if (hit.transform.gameObject.TryGetComponent<InteractableObject>(out var obj))
 					{

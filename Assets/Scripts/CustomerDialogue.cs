@@ -5,6 +5,7 @@ using StarterAssets;
 using UnityEngine.InputSystem;
 using TMPro;
 using UnityEngine.UI;
+using UnityEditor.Animations;
 
 public class CustomerDialogue : FluentScript
 {
@@ -12,8 +13,15 @@ public class CustomerDialogue : FluentScript
     GameObject canvas;
 	[SerializeField]
 	TMP_Text speakerBox;
+	Animator animator;
 
 	CustomerOptions customerOptions;
+
+	private new void Awake()
+	{
+		animator = GetComponentInParent<Animator>();
+		base.Awake();
+	}
 
 	private void DisablePlayerMovement()
 	{
@@ -47,18 +55,22 @@ public class CustomerDialogue : FluentScript
 		fpc.EnableGameInputs();
 	}
 
-	private void SetCustomerSpeaking()
+	private void SetCustomerSpeaking(string action = "Talk")
 	{
 		speakerBox.text = "Customer";
+		animator.SetBool("Interacting", true);
+		animator.SetTrigger(action);
 	}
 
 	private void SetWaiterSpeaking()
 	{
 		speakerBox.text = "You";
+		animator.SetBool("Interacting", false);
 	}
 
 	public override void OnStart()
     {
+		animator.SetBool("Interacting", true);
 		customerOptions = GetComponent<CustomerOptions>();
 		DisablePlayerMovement();
         base.OnStart();
@@ -66,6 +78,7 @@ public class CustomerDialogue : FluentScript
 
     public override void OnFinish()
     {
+		animator.SetBool("Interacting", false);
 		EnablePlayerMovement();
 		GetComponentInParent<CustomerAI>().LeaveQueue();
         base.OnFinish();
@@ -101,12 +114,12 @@ public class CustomerDialogue : FluentScript
 				Options(
 					Option("> Here is your order.") *
 						Write("Here is your order.").WaitForButton()*
-						Do(() => SetCustomerSpeaking()) *
+						Do(() => SetCustomerSpeaking("Nod")) *
 						Write("Thank you.").WaitForButton() *
 						End() *
 					Option("> Sorry, we ran out of " + (customerOptions.FoodNameGet(true) == "" ? customerOptions.DrinkNameGet() : customerOptions.FoodNameGet(true)) + ".") *
 						Write("Sorry, we ran out of " + (customerOptions.FoodNameGet(true) == "" ? customerOptions.DrinkNameGet() : customerOptions.FoodNameGet(true)) + ".").WaitForButton() *
-						Do(() => SetCustomerSpeaking()) *
+						Do(() => SetCustomerSpeaking("Yell")) *
 						Write("This is ridicolous!").WaitForButton() *
 						End()
 				) *

@@ -2,18 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityStandardAssets.Characters.ThirdPerson;
 
 public class CustomerAI : MonoBehaviour
 {
 	Vector3 startPosition;
-	public Vector3 StartPoition{ get { return startPosition; } }
+	public Vector3 StartPosition{ get { return startPosition; } }
+	
 	NavMeshAgent agent;
+	ThirdPersonCharacter character;
+
 	public enum QueuingState
 	{
 		None,
 		MovingToQueue,
 		Queuing,
-		LeavingQueue
+		FacingForward,
+		LeavingQueue,
+		ReturningToTable
 	}
 	QueuingState state;
 	public QueuingState State
@@ -27,29 +33,51 @@ public class CustomerAI : MonoBehaviour
 	{
 		startPosition = transform.position;
 		agent = GetComponent<NavMeshAgent>();
+		character = GetComponent<ThirdPersonCharacter>();
 	}
 
 	private void Start()
 	{
+		agent.updateRotation = false;
+
+		// for now have all custome queue up as soona s the game starts
 		QueueManager.Instance.QueuUp(this);
 	}
 
 	private void Update()
 	{
-		QueueManager qm = QueueManager.Instance;
 		if(agent.hasPath)
 		{
-			if ( state == QueuingState.MovingToQueue && agent.remainingDistance < qm.Spacing * 0.25f )
+			QueueManager qm = QueueManager.Instance;
+			if ( state == QueuingState.MovingToQueue && agent.remainingDistance < qm.Spacing * 0.5f )
 			{
 				qm.OnQueueLocationReached(this);
 			}
-			else if (state == QueuingState.Queuing && agent.remainingDistance < qm.Spacing * 0.1f)
+			else if (state == QueuingState.Queuing && agent.remainingDistance < qm.Spacing * 0.2f)
+			{
+				qm.LookForward(this);
+			}
+			else if (state == QueuingState.FacingForward && agent.remainingDistance < qm.Spacing * 0.01f)
 			{
 				agent.isStopped = true;
 			}
-			else if (state == QueuingState.LeavingQueue && agent.remainingDistance < 0.1f)
+			else if (state == QueuingState.LeavingQueue && agent.remainingDistance < qm.Spacing)
+			{
+				state = QueuingState.ReturningToTable;
+				agent.SetDestination(StartPosition);
+			}
+			else if (state == QueuingState.ReturningToTable && agent.remainingDistance < 0.1f)
 			{
 				state = QueuingState.None;
+			}
+
+			if (agent.remainingDistance > agent.stoppingDistance && !agent.isStopped)
+			{
+				character.Move(agent.desiredVelocity, false, false);
+			}
+			else
+			{
+				character.Move(Vector3.zero, false, false);
 			}
 		}
 	}

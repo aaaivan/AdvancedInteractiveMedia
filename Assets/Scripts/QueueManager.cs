@@ -10,6 +10,7 @@ public class QueueManager : MonoBehaviour
 	List<CustomerAI> customers = new List<CustomerAI>();
 	[SerializeField]
 	float spacing = 1;
+	const float alignmentDist = 0.5f;
 	public float Spacing
 	{
 		get { return spacing; }
@@ -43,12 +44,10 @@ public class QueueManager : MonoBehaviour
 	{
 		if (!customers.Contains(c) && c.GetComponent<NavMeshAgent>() != null)
 		{
-			Vector3 startPosition = transform.position;
-			Vector3 targetPosition = startPosition - transform.forward * queuePositions.Count * spacing;
 			customers.Add(c);
 			c.State = CustomerAI.QueuingState.MovingToQueue;
 			NavMeshAgent agent = c.GetComponent<NavMeshAgent>();
-			agent.SetDestination(targetPosition);
+			agent.SetDestination(NextPositionGet());
 			agent.isStopped = false;
 		}
 	}
@@ -65,20 +64,34 @@ public class QueueManager : MonoBehaviour
 		}
 
 		c.State = CustomerAI.QueuingState.Queuing;
-		queuePositions.Add(c.GetComponent<NavMeshAgent>().destination);
+		NavMeshAgent agent = c.GetComponent<NavMeshAgent>();
+		Vector3 newDest = agent.destination + transform.forward * spacing * alignmentDist;
+		queuePositions.Add(newDest);
 		UpdateQueuePriorities();
 
-		Vector3 startPosition = transform.position;
-		Vector3 targetPosition = startPosition - transform.forward * queuePositions.Count * spacing;
 		for (int i = queuePositions.Count; i < customers.Count; ++i)
 		{
 			NavMeshAgent ag = customers[i].GetComponent<NavMeshAgent>();
-			ag.SetDestination(targetPosition);
+			ag.SetDestination(NextPositionGet());
 			ag.isStopped = false;
 		}
 	}
 	
+	public void LookForward(CustomerAI c)
+	{
+		NavMeshAgent agent = c.GetComponent<NavMeshAgent>();
+		int position = customers.FindIndex(x => x == c);
+		agent.SetDestination(queuePositions[position]);
+		agent.isStopped = false;
+		c.State = CustomerAI.QueuingState.FacingForward;
+	}
+
 	public void RemoveFromQueue(CustomerAI c)
+	{
+		StartCoroutine(RemoveFromQueueCoroutine(c));
+	}
+
+	IEnumerator RemoveFromQueueCoroutine(CustomerAI c)
 	{
 		if (customers.Contains(c))
 		{
@@ -86,30 +99,32 @@ public class QueueManager : MonoBehaviour
 			customers.Remove(c);
 			c.State = CustomerAI.QueuingState.LeavingQueue;
 
+			NavMeshAgent agent = c.GetComponent<NavMeshAgent>();
+
+			bool goRight = c.StartPosition.z > 0;
+			agent.SetDestination(c.transform.right * 2 * spacing * (goRight ? 1 : -1));
+
+			agent.isStopped = false;
+
 			if (position < queuePositions.Count)
 			{
 				queuePositions.RemoveAt(queuePositions.Count - 1);
-
-				for (int i = position; i < queuePositions.Count; ++i)
-				{
-					NavMeshAgent ag = customers[i].GetComponent<NavMeshAgent>();
-					ag.SetDestination(queuePositions[i]);
-					ag.isStopped = false;
-				}
-
-				Vector3 startPosition = transform.position;
-				Vector3 targetPosition = startPosition - transform.forward * queuePositions.Count * spacing;
-				for (int i = queuePositions.Count; i < customers.Count; ++i)
-				{
-					NavMeshAgent ag = customers[i].GetComponent<NavMeshAgent>();
-					ag.SetDestination(targetPosition);
-					ag.isStopped = false;
-				}
 			}
 			UpdateQueuePriorities();
-			NavMeshAgent agent = c.GetComponent<NavMeshAgent>();
-			agent.SetDestination(c.StartPoition);
-			agent.isStopped = false;
+			yield return new WaitForSeconds(3);
+
+			for (int i = position; i < queuePositions.Count; ++i)
+			{
+				NavMeshAgent ag = customers[i].GetComponent<NavMeshAgent>();
+				ag.SetDestination(queuePositions[i]);
+				ag.isStopped = false;
+			}
+			for (int i = queuePositions.Count; i < customers.Count; ++i)
+			{
+				NavMeshAgent ag = customers[i].GetComponent<NavMeshAgent>();
+				ag.SetDestination(NextPositionGet());
+				ag.isStopped = false;
+			}
 		}
 	}
 
@@ -124,5 +139,12 @@ public class QueueManager : MonoBehaviour
 		{
 			customers[i].GetComponent<NavMeshAgent>().avoidancePriority = 99;
 		}
+	}
+
+	private Vector3 NextPositionGet()
+	{
+		Vector3 startPosition = transform.position;
+		Vector3 targetPosition = startPosition - transform.forward * queuePositions.Count * spacing - transform.forward * spacing * alignmentDist;
+		return targetPosition;
 	}
 }

@@ -69,7 +69,7 @@ namespace Fluent
 				Debug.LogWarning("This FluentScipt is already active " + gameAction.GetType().Name, gameAction);
 				return;
 			}
-			else if (possibleDialogues.Contains(gameAction))
+			else/* if (possibleDialogues.Contains(gameAction))*/
 			{
 				gameAction.SetDoneCallback(ActionCompleted);
 				activeDialogue = gameAction;
