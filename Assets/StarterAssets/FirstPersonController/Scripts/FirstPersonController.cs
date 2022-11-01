@@ -279,7 +279,8 @@ namespace StarterAssets
 				//do the raycast specifying the mask
 				if (Physics.Raycast(ray, out RaycastHit hit, 3, layer_mask))
 				{
-					if (hit.transform.gameObject.TryGetComponent<InteractableObject>(out var obj))
+					InteractableObject obj = hit.transform.gameObject.GetComponentInChildren<InteractableObject>();
+					if (obj != null)
 					{
 						obj.DoInteraction();
 					}

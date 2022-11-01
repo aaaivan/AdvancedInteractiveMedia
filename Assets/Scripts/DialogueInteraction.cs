@@ -7,6 +7,6 @@ public class DialogueInteraction : MonoBehaviour, InteractableObject
 {
    public void DoInteraction()
 	{
-		DialogueManager.Instance.ExecuteAction(GetComponentInChildren<FluentScript>());
+		DialogueManager.Instance.ExecuteAction(GetComponent<FluentScript>());
 	}
 }
