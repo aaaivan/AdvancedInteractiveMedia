@@ -7177,7 +7177,7 @@ PrefabInstance:
     - target: {fileID: 1672084748197675801, guid: 5b59fbe702505ff4c85aed9c7e3499bb,
         type: 3}
       propertyPath: m_Name
-      value: Cylinder (4)
+      value: Customer (4)
       objectReference: {fileID: 0}
     - target: {fileID: 1672084748197675805, guid: 5b59fbe702505ff4c85aed9c7e3499bb,
         type: 3}
@@ -7288,7 +7288,7 @@ PrefabInstance:
     - target: {fileID: 1672084748197675801, guid: 5b59fbe702505ff4c85aed9c7e3499bb,
         type: 3}
       propertyPath: m_Name
-      value: Cylinder (3)
+      value: Customer (3)
       objectReference: {fileID: 0}
     - target: {fileID: 1672084748197675805, guid: 5b59fbe702505ff4c85aed9c7e3499bb,
         type: 3}
@@ -11617,7 +11617,7 @@ PrefabInstance:
     - target: {fileID: 1672084748197675801, guid: 5b59fbe702505ff4c85aed9c7e3499bb,
         type: 3}
       propertyPath: m_Name
-      value: Cylinder (6)
+      value: Customer (6)
       objectReference: {fileID: 0}
     - target: {fileID: 1672084748197675805, guid: 5b59fbe702505ff4c85aed9c7e3499bb,
         type: 3}
@@ -11714,7 +11714,8 @@ PrefabInstance:
       propertyPath: m_Radius
       value: 0.5
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4786178285127878013, guid: 5b59fbe702505ff4c85aed9c7e3499bb, type: 3}
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 5b59fbe702505ff4c85aed9c7e3499bb, type: 3}
 --- !u!43 &1105589116
@@ -16574,7 +16575,7 @@ PrefabInstance:
     - target: {fileID: 1672084748197675801, guid: 5b59fbe702505ff4c85aed9c7e3499bb,
         type: 3}
       propertyPath: m_Name
-      value: Cylinder (1)
+      value: Customer (1)
       objectReference: {fileID: 0}
     - target: {fileID: 1672084748197675805, guid: 5b59fbe702505ff4c85aed9c7e3499bb,
         type: 3}
@@ -18485,7 +18486,7 @@ PrefabInstance:
     - target: {fileID: 1672084748197675801, guid: 5b59fbe702505ff4c85aed9c7e3499bb,
         type: 3}
       propertyPath: m_Name
-      value: Cylinder
+      value: Customer
       objectReference: {fileID: 0}
     - target: {fileID: 1672084748197675805, guid: 5b59fbe702505ff4c85aed9c7e3499bb,
         type: 3}
@@ -18764,6 +18765,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5393215578589016655, guid: c5efc39a8aaf6e64ea40e9ad573e9b47,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5393215578589016655, guid: c5efc39a8aaf6e64ea40e9ad573e9b47,
         type: 3}

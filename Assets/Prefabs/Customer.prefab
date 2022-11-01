@@ -1075,11 +1075,11 @@ GameObject:
   m_Component:
   - component: {fileID: 1672084749394611683}
   - component: {fileID: 1672084749394611685}
+  - component: {fileID: 1341446348414446951}
   - component: {fileID: 1672084749394611686}
   - component: {fileID: 1672084749394611680}
-  - component: {fileID: 1672084749394611682}
   - component: {fileID: 1672084749394611681}
-  - component: {fileID: 1341446348414446951}
+  - component: {fileID: 1672084749394611682}
   m_Layer: 7
   m_Name: Dialogue
   m_TagString: Untagged
@@ -1116,6 +1116,18 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0.9, z: 0}
+--- !u!114 &1341446348414446951
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1672084749394611692}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a0fb67a30d7e15499045cce2d271f2f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1672084749394611686
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1147,6 +1159,20 @@ MonoBehaviour:
   OptionItemUI: {fileID: 7585644104031029519, guid: f5fdb649fca4db74ca006846f5bc05fd,
     type: 3}
   OptionsPanel: {fileID: 0}
+--- !u!114 &1672084749394611681
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1672084749394611692}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d82938aa06b7b242b2c51c577db2220, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canvas: {fileID: 0}
+  speakerBox: {fileID: 0}
 --- !u!114 &1672084749394611682
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1163,32 +1189,6 @@ MonoBehaviour:
   randomDrink: 1
   drink: 2
   food: 2
---- !u!114 &1672084749394611681
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1672084749394611692}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4d82938aa06b7b242b2c51c577db2220, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  canvas: {fileID: 0}
-  speakerBox: {fileID: 0}
---- !u!114 &1341446348414446951
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1672084749394611692}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a0fb67a30d7e15499045cce2d271f2f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1696448733660675851
 GameObject:
   m_ObjectHideFlags: 0
@@ -1583,7 +1583,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1480495835287494407}
-  - component: {fileID: 4786178285127878013}
   m_Layer: 3
   m_Name: Lana_TPose
   m_TagString: Untagged
@@ -1607,26 +1606,6 @@ Transform:
   m_Father: {fileID: 1672084748197675805}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &4786178285127878013
-Animator:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2287854667657495997}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 2d7e2ef432c92724ca9bfc0c378c1058, type: 3}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 1
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 1
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &2292330977529355314
 GameObject:
   m_ObjectHideFlags: 0
