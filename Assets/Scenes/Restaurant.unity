@@ -2705,6 +2705,7 @@ GameObject:
   - component: {fileID: 364750543}
   - component: {fileID: 364750542}
   - component: {fileID: 364750544}
+  - component: {fileID: 364750545}
   m_Layer: 7
   m_Name: OrderSummary
   m_TagString: Untagged
@@ -2804,6 +2805,23 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &364750545
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 364750540}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8cae0d7581869bf42bbc1d598a40b3e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  listHolderObject: {fileID: 2127419113}
+  totalCostText: {fileID: 1667081854}
+  totalCostString: "Total: \xA3{0}"
+  orderEntryPrefab: {fileID: 8744555087511255010, guid: fdac4e642f8f10a4db149175c45a2080,
+    type: 3}
 --- !u!1 &374236742
 GameObject:
   m_ObjectHideFlags: 0
@@ -17201,7 +17219,6 @@ GameObject:
   - component: {fileID: 1667081852}
   - component: {fileID: 1667081855}
   - component: {fileID: 1667081854}
-  - component: {fileID: 1667081853}
   m_Layer: 7
   m_Name: Total
   m_TagString: Untagged
@@ -17229,18 +17246,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 6.13}
   m_Pivot: {x: 0.5, y: 1}
---- !u!114 &1667081853
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1667081851}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e8cc859f4d798d64f8fe1e4ef7be6cb7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1667081854
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21128,7 +21133,6 @@ GameObject:
   - component: {fileID: 2127419113}
   - component: {fileID: 2127419115}
   - component: {fileID: 2127419114}
-  - component: {fileID: 2127419116}
   m_Layer: 7
   m_Name: Content
   m_TagString: Untagged
@@ -21196,20 +21200,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 0
   m_VerticalFit: 1
---- !u!114 &2127419116
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2127419112}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8cae0d7581869bf42bbc1d598a40b3e7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  orderEntryPrefab: {fileID: 8744555087511255010, guid: fdac4e642f8f10a4db149175c45a2080,
-    type: 3}
 --- !u!1001 &709651505773268961
 PrefabInstance:
   m_ObjectHideFlags: 0

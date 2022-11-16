@@ -11,6 +11,7 @@ public class UI_OrderItem : MonoBehaviour
 	TMP_Text text;
 
 	CafeMenuItem item;
+	public CafeMenuItem Item { get {return item;} }
 	int quantity;
 
 	public delegate void RemoveFromOrder(string i);
