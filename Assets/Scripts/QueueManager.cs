@@ -27,11 +27,15 @@ public class QueueManager : MonoBehaviour
 		}
 	}
 
+	private void OnDestroy()
+	{
+		instance = null;
+	}
+
 	public void Awake()
 	{
 		if (instance == null)
 		{
-			DontDestroyOnLoad(gameObject);
 			instance = this;
 		}
 		else if (instance != null)
