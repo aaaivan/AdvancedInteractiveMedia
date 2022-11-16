@@ -1,11 +1,7 @@
 using Fluent;
-using System;
 using UnityEngine;
 using StarterAssets;
-using UnityEngine.InputSystem;
 using TMPro;
-using UnityEngine.UI;
-using UnityEditor.Animations;
 
 public class CustomerDialogue : FluentScript
 {

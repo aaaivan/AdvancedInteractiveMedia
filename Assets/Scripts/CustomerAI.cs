@@ -40,7 +40,7 @@ public class CustomerAI : MonoBehaviour
 	{
 		agent.updateRotation = false;
 
-		// for now have all custome queue up as soona s the game starts
+		// for now have all custome queue up as soon as the game starts
 		QueueManager.Instance.QueuUp(this);
 	}
 
