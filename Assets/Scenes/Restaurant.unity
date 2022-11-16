@@ -767,7 +767,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 218051822}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 364750545}
+        m_TargetAssemblyTypeName: UI_OrderItemsList, Assembly-CSharp
+        m_MethodName: ConfirmOrder
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &218051822
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2822,6 +2834,8 @@ MonoBehaviour:
   totalCostString: "Total: \xA3{0}"
   orderEntryPrefab: {fileID: 8744555087511255010, guid: fdac4e642f8f10a4db149175c45a2080,
     type: 3}
+  orderActionsPanel: {fileID: 1528591797}
+  processPaymentPanel: {fileID: 1493096075}
 --- !u!1 &374236742
 GameObject:
   m_ObjectHideFlags: 0
@@ -8053,6 +8067,7 @@ GameObject:
   - component: {fileID: 475078131}
   - component: {fileID: 475078133}
   - component: {fileID: 475078132}
+  - component: {fileID: 475078134}
   m_Layer: 7
   m_Name: Processing
   m_TagString: Untagged
@@ -8177,6 +8192,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 475078130}
   m_CullTransparentMesh: 1
+--- !u!114 &475078134
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 475078130}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 214da86bd570f194797dbd87a544a834, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  processingText: Processing Payment {0}
 --- !u!1 &503302734
 GameObject:
   m_ObjectHideFlags: 0
@@ -12465,7 +12493,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 909232400}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 364750545}
+        m_TargetAssemblyTypeName: UI_OrderItemsList, Assembly-CSharp
+        m_MethodName: ClearOrder
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &909232400
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17016,7 +17056,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1612807497}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 364750545}
+        m_TargetAssemblyTypeName: UI_OrderItemsList, Assembly-CSharp
+        m_MethodName: CancelPayment
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1612807497
 MonoBehaviour:
   m_ObjectHideFlags: 0
