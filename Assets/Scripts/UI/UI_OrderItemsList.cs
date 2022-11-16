@@ -1,3 +1,4 @@
+using Newtonsoft.Json.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -12,18 +13,35 @@ public class UI_OrderItemsList : MonoBehaviour
 	[SerializeField]
 	string totalCostString = "Total: £{0}";
 	[SerializeField]
+	TMP_Text tableNumberText;
+	[SerializeField]
+	string tableNumberString = "Table Number: {0}";
+	[SerializeField]
 	UI_OrderItem orderEntryPrefab;
-
 	[SerializeField]
 	RectTransform orderActionsPanel;
 	[SerializeField]
 	RectTransform processPaymentPanel;
+	[SerializeField]
+	RectTransform clearOrderButton;
+	[SerializeField]
+	UI_CancelOrderButton cancelOrderButton;
+
+	public delegate void ProcessOrder( List<CafeMenuItem> i);
+	static public event ProcessOrder OnOrderSubmitted;
 
 	IEnumerator coroutine = null;
 	Dictionary<string, UI_OrderItem> itemsInList = new Dictionary<string, UI_OrderItem>();
 
 	float totalCost = 0;
-	public float TotalCost { get { return totalCost; } }
+	public float TotalCost { get { return totalCost; }}
+	int tableNumber = 0;
+	public int TableNumber
+	{ 
+		get { return tableNumber; }
+		set { tableNumber = value; tableNumberText.text = string.Format(tableNumberString, tableNumber); }
+	}
+
 
 	private void OnEnable()
 	{
@@ -87,8 +105,12 @@ public class UI_OrderItemsList : MonoBehaviour
 
 	public void ConfirmOrder()
 	{
+		if (itemsInList.Count == 0)
+			return;
+
 		orderActionsPanel.gameObject.SetActive(false);
 		processPaymentPanel.gameObject.SetActive(true);
+		clearOrderButton.gameObject.SetActive(false);
 		coroutine = PaymentProcessingCoroutine();
 		StartCoroutine(coroutine);
 	}
@@ -99,6 +121,7 @@ public class UI_OrderItemsList : MonoBehaviour
 		processPaymentPanel.gameObject.SetActive(false);
 		StopCoroutine(coroutine);
 		coroutine = null;
+		clearOrderButton.gameObject.SetActive(true);
 	}
 
 	IEnumerator PaymentProcessingCoroutine()
@@ -110,11 +133,24 @@ public class UI_OrderItemsList : MonoBehaviour
 
 	private void SubmitOrder()
 	{
-		Debug.Log("Order submitted!");
-		ClearOrder();
-		orderActionsPanel.gameObject.SetActive(true);
-		processPaymentPanel.gameObject.SetActive(false);
+		List<CafeMenuItem> orderItems = new List<CafeMenuItem>();
+		foreach (var orderItem in itemsInList)
+		{
+			for (int i = 0; i < orderItem.Value.Quantity; i++)
+			{
+				CafeMenuItem item = orderItem.Value.Item;
+				if(item.type != CafeMenuItem.MenuItemType.Drink)
+				{
+					orderItems.Add(item);
+				}
+			}
+		}
+		cancelOrderButton.CancelOrder();
+		CancelPayment();
 
+		if (OnOrderSubmitted != null)
+		{
+			OnOrderSubmitted.Invoke(orderItems);
+		}
 	}
-
 }

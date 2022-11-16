@@ -13,6 +13,7 @@ public class UI_OrderItem : MonoBehaviour
 	CafeMenuItem item;
 	public CafeMenuItem Item { get {return item;} }
 	int quantity;
+	public int Quantity { get { return quantity; } }
 
 	public delegate void RemoveFromOrder(string i);
 	static public event RemoveFromOrder OnRemoveFromOrder;
