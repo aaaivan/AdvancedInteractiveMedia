@@ -27,7 +27,7 @@ public class UI_OrderItemsList : MonoBehaviour
 	[SerializeField]
 	UI_CancelOrderButton cancelOrderButton;
 
-	public delegate void ProcessOrder( List<CafeMenuItem> i);
+	public delegate void ProcessOrder( List<CafeMenuItem> i, int table);
 	static public event ProcessOrder OnOrderSubmitted;
 
 	IEnumerator coroutine = null;
@@ -150,7 +150,7 @@ public class UI_OrderItemsList : MonoBehaviour
 
 		if (OnOrderSubmitted != null)
 		{
-			OnOrderSubmitted.Invoke(orderItems);
+			OnOrderSubmitted.Invoke(orderItems, tableNumber);
 		}
 	}
 }
