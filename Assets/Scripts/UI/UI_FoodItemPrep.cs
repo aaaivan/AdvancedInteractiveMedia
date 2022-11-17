@@ -14,6 +14,8 @@ public class UI_FoodItemPrep : MonoBehaviour
 	string itemString = "T{0} - {1}";
 
 	CafeMenuItem foodItem;
+	public CafeMenuItem FoodItem { get { return foodItem; } }
+
 	float prepStartTime = 0;
 	bool isReady = true;
 	int tableNumber = 0;

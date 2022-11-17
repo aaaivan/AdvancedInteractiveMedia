@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +8,7 @@ public class UI_FoodPrepList : MonoBehaviour
 	[SerializeField]
 	UI_FoodItemPrep foodItemPrefab;
 	List<GameObject> foodItemEntries = new List<GameObject>();
+	Queue<Tuple<CafeMenuItem, int>> queueForCounter = new Queue<Tuple<CafeMenuItem, int>>();
 
 	private void OnEnable()
 	{
@@ -35,9 +37,31 @@ public class UI_FoodPrepList : MonoBehaviour
 	{
 		if(foodItemEntries.Remove(foodItemEntry))
 		{
-			// spawn food
+			UI_FoodItemPrep readyItem = foodItemEntry.GetComponent<UI_FoodItemPrep>();
+			if (queueForCounter.Count == 0)
+			{
+				if(!FoodSpawningManager.Instance.TrySpawnFood(readyItem.FoodItem, readyItem.TableNumber))
+				{
+					queueForCounter.Enqueue(new Tuple<CafeMenuItem, int>(readyItem.FoodItem, readyItem.TableNumber));
+				}
+			}
+			else
+			{
+				queueForCounter.Enqueue(new Tuple<CafeMenuItem, int>(readyItem.FoodItem, readyItem.TableNumber));
+			}
 			Destroy(foodItemEntry);
 		}
 	}
 
+	private void Update()
+	{
+		if (queueForCounter.Count > 0)
+		{
+			Tuple<CafeMenuItem, int> readyItem = queueForCounter.Peek();
+			if (FoodSpawningManager.Instance.TrySpawnFood(readyItem.Item1, readyItem.Item2))
+			{
+				queueForCounter.Dequeue();
+			}
+		}
+	}
 }
