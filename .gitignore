@@ -57,6 +57,3 @@ sysinfo.txt
 
 # Crashlytics generated file
 crashlytics-build.properties
-
-# File over the 100MB limit
-Assets/Animations/David_TPose.fbx
