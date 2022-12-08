@@ -35,26 +35,10 @@ public class ExitTabletView : MonoBehaviour, InteractableObject
 
 	public void DoInteraction()
 	{
-		EnablePlayerMovement();
+		InputsManager.Instance.EnablePlayerMovement();
 		cam.enabled = false;
 		enterTrigger.SetActive(true);
 		gameObject.SetActive(false);
-	}
-
-	private void EnablePlayerMovement()
-	{
-		FirstPersonController fpc = InputsManager.Instance.firstPersonController;
-		GameObject player = fpc.gameObject;
-		StarterAssetsInputs inputs = player.GetComponent<StarterAssetsInputs>();
-		if (Input.mousePresent)
-		{
-			Cursor.lockState = CursorLockMode.Locked;
-			Cursor.visible = false;
-			inputs.cursorLocked = true;
-			inputs.cursorInputForLook = true;
-		}
-
-		fpc.EnableGameInputs();
 	}
 
 	private void DoRaycast()

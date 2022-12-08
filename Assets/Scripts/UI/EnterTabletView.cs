@@ -13,23 +13,8 @@ public class EnterTabletView : MonoBehaviour, InteractableObject
 	GameObject exitTrigger;
 	public void DoInteraction()
 	{
-		DisablePlayerMovement();
+		InputsManager.Instance.DisablePlayerMovement();
 		cam.enabled = true;
 		exitTrigger.SetActive(true);
-	}
-	private void DisablePlayerMovement()
-	{
-		FirstPersonController fpc = InputsManager.Instance.firstPersonController;
-		GameObject player = fpc.gameObject;
-		StarterAssetsInputs inputs = player.GetComponent<StarterAssetsInputs>();
-		if (Input.mousePresent)
-		{
-			Cursor.visible = true;
-			Cursor.lockState = CursorLockMode.None;
-			inputs.cursorLocked = false;
-			inputs.cursorInputForLook = false;
-		}
-
-		fpc.DisableGameInputs();
 	}
 }

@@ -322,7 +322,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2354b1ef71d9f0f4595332b4587c114d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  destination: {fileID: 720114390}
   walkToIdleSpeedTrashhold: 0.1
   maxDistanceError: 0.25
   rotationSpeedMultiplier: 10
@@ -832,17 +831,17 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 101e105f28117174ebfe8fa1ae13e6dc,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.82
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 101e105f28117174ebfe8fa1ae13e6dc,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.00000023841858
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 101e105f28117174ebfe8fa1ae13e6dc,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -13.96
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 101e105f28117174ebfe8fa1ae13e6dc,
         type: 3}
