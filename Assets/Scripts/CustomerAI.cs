@@ -1,91 +1,55 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
-using UnityStandardAssets.Characters.ThirdPerson;
 
 public class CustomerAI : MonoBehaviour
 {
-	Vector3 startPosition;
-	public Vector3 StartPosition{ get { return startPosition; } }
-	
-	NavMeshAgent agent;
-	ThirdPersonCharacter character;
+	public Transform chair;
+	public Transform exit;
 
-	public enum QueuingState
+	CustomerMovementController movementController;
+	public CustomerMovementController MovementController { get { return movementController; } }
+
+	public enum CustomerState
 	{
 		None,
 		MovingToQueue,
 		Queuing,
-		FacingForward,
-		LeavingQueue,
-		ReturningToTable
+		FrontOfTheQueue,
+		MovingToTable,
+		AtTheTable,
+		MovingToExit
 	}
-	QueuingState state;
-	public QueuingState State
+	CustomerState state;
+	public CustomerState State
 	{
 		get { return state; }
 		set { state = value; }
 	}
 
-
 	private void Awake()
 	{
-		startPosition = transform.position;
-		agent = GetComponent<NavMeshAgent>();
-		character = GetComponent<ThirdPersonCharacter>();
+		movementController = GetComponent<CustomerMovementController>();
+		state = CustomerState.None;
 	}
 
 	private void Start()
 	{
-		agent.updateRotation = false;
-
-		// for now have all custome queue up as soon as the game starts
-		QueueManager.Instance.QueuUp(this);
+		QueueUp();
 	}
 
-	private void Update()
+	public void QueueUp()
 	{
-		if(agent.hasPath)
-		{
-			QueueManager qm = QueueManager.Instance;
-			if ( state == QueuingState.MovingToQueue && agent.remainingDistance < qm.Spacing * 0.5f )
-			{
-				qm.OnQueueLocationReached(this);
-			}
-			else if (state == QueuingState.Queuing && agent.remainingDistance < qm.Spacing * 0.2f)
-			{
-				qm.LookForward(this);
-			}
-			else if (state == QueuingState.FacingForward && agent.remainingDistance < qm.Spacing * 0.01f)
-			{
-				agent.isStopped = true;
-			}
-			else if (state == QueuingState.LeavingQueue && agent.remainingDistance < qm.Spacing)
-			{
-				state = QueuingState.ReturningToTable;
-				agent.SetDestination(StartPosition);
-			}
-			else if (state == QueuingState.ReturningToTable && agent.remainingDistance < 0.1f)
-			{
-				state = QueuingState.None;
-			}
-
-			if (agent.remainingDistance > agent.stoppingDistance && !agent.isStopped)
-			{
-				character.Move(agent.desiredVelocity, false, false);
-			}
-			else
-			{
-				character.Move(Vector3.zero, false, false);
-			}
-		}
+		QueueManager.Instance.AddToQueue(this);
 	}
 
 	public void LeaveQueue()
 	{
-		QueueManager qm = QueueManager.Instance;
-		qm.RemoveFromQueue(this);
+		QueueManager.Instance.RemoveFromQueue(this, chair, CustomerState.MovingToTable);
 	}
 
+	private void Update()
+	{
+		if(Input.GetKeyUp(KeyCode.L) && state == CustomerState.FrontOfTheQueue) { LeaveQueue(); }
+	}
 }

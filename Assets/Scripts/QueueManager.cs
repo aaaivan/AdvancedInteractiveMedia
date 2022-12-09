@@ -3,18 +3,19 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.InputSystem.XR;
 
 public class QueueManager : MonoBehaviour
 {
-	List<Vector3> queuePositions = new List<Vector3>();
-	List<CustomerAI> customers = new List<CustomerAI>();
 	[SerializeField]
-	float spacing = 1;
-	const float alignmentDist = 0.5f;
-	public float Spacing
-	{
-		get { return spacing; }
-	}
+	Transform[] queuePositions;
+	[SerializeField]
+	Transform rightQueueExitWaypoint = null;
+	[SerializeField]
+	Transform leftQueueExitWaypoint = null;
+
+	List<CustomerAI> queuingCustomers = new List<CustomerAI>();
+	int queueLength = 0;
 
 	static QueueManager instance;
 	public static QueueManager Instance
@@ -27,16 +28,28 @@ public class QueueManager : MonoBehaviour
 		}
 	}
 
-	private void OnDestroy()
+	private void OnEnable()
 	{
-		instance = null;
+		CustomerMovementController.OnDestinationReached += OnQueueLocationReached;
 	}
 
-	public void Awake()
+	private void OnDisable()
+	{
+		CustomerMovementController.OnDestinationReached -= OnQueueLocationReached;
+	}
+
+	private void OnDestroy()
+	{
+		if(instance == this)
+			instance = null;
+	}
+
+	private void Awake()
 	{
 		if (instance == null)
 		{
 			instance = this;
+			queueLength = 0;
 		}
 		else if (instance != null)
 		{
@@ -44,111 +57,133 @@ public class QueueManager : MonoBehaviour
 		}
 	}
 
-	public void QueuUp( CustomerAI c )
+	public void AddToQueue(CustomerAI customer)
 	{
-		if (!customers.Contains(c) && c.GetComponent<NavMeshAgent>() != null)
+		if (queuingCustomers.Count >= queuePositions.Length)
+			return;
+
+		if (!queuingCustomers.Contains(customer) && customer.MovementController != null)
 		{
-			customers.Add(c);
-			c.State = CustomerAI.QueuingState.MovingToQueue;
-			NavMeshAgent agent = c.GetComponent<NavMeshAgent>();
-			agent.SetDestination(NextPositionGet());
-			agent.isStopped = false;
+			// register this customer as moving to the queue and set their destination
+			queuingCustomers.Add(customer);
+			customer.State = CustomerAI.CustomerState.MovingToQueue;
+			Transform nextPosition = NextPositionGet();
+			customer.MovementController.SetDestination(nextPosition.position, nextPosition.forward);
 		}
 	}
 
-	public void OnQueueLocationReached(CustomerAI c)
+	private void OnQueueLocationReached(CustomerMovementController controller)
 	{
-		int position = customers.FindIndex(x => x == c);
+		int position = queuingCustomers.FindIndex(x => x.MovementController == controller);
 
-		if(position > queuePositions.Count)
+		if (position == -1)
+			return;
+
+		CustomerAI customer = queuingCustomers[position];
+		// set the correct state for the customer
+		if (customer.State == CustomerAI.CustomerState.MovingToQueue)
 		{
-			CustomerAI temp = customers[queuePositions.Count];
-			customers[queuePositions.Count] = customers[position];
-			customers[position] = temp;
+			if (queueLength == 0)
+				customer.State = CustomerAI.CustomerState.FrontOfTheQueue;
+			else
+				customer.State = CustomerAI.CustomerState.Queuing;
+		}
+		else if (customer.State == CustomerAI.CustomerState.Queuing && position == 0)
+		{
+			customer.State = CustomerAI.CustomerState.FrontOfTheQueue;
+			return;
+		}
+		else
+		{
+			return;
 		}
 
-		c.State = CustomerAI.QueuingState.Queuing;
-		NavMeshAgent agent = c.GetComponent<NavMeshAgent>();
-		Vector3 newDest = agent.destination + transform.forward * spacing * alignmentDist;
-		queuePositions.Add(newDest);
+		// do a swap so that the customer who's just arrived is at the queueLength-th position
+		CustomerAI temp = queuingCustomers[queueLength];
+		queuingCustomers[queueLength] = queuingCustomers[position];
+		queuingCustomers[position] = temp;
+	
+		// update the length of the queue
+		++queueLength;
+
+		// update the priorities of the navmesh agents
 		UpdateQueuePriorities();
 
-		for (int i = queuePositions.Count; i < customers.Count; ++i)
+		// update the destination of the customers still walking to reach the queue
+		for (int i = queueLength; i < queuingCustomers.Count; ++i)
 		{
-			NavMeshAgent ag = customers[i].GetComponent<NavMeshAgent>();
-			ag.SetDestination(NextPositionGet());
-			ag.isStopped = false;
+			Transform nextPosition = NextPositionGet();
+			queuingCustomers[i].MovementController.SetDestination(nextPosition.position, nextPosition.forward);
 		}
 	}
-	
-	public void LookForward(CustomerAI c)
+
+	public void RemoveFromQueue(CustomerAI customer, Transform nextDestination, CustomerAI.CustomerState newState = CustomerAI.CustomerState.None)
 	{
-		NavMeshAgent agent = c.GetComponent<NavMeshAgent>();
-		int position = customers.FindIndex(x => x == c);
-		agent.SetDestination(queuePositions[position]);
-		agent.isStopped = false;
-		c.State = CustomerAI.QueuingState.FacingForward;
+		int position = queuingCustomers.FindIndex(x => x);
+		if (position == -1)
+			return;
+
+		// remove customer from the queue
+		queuingCustomers.RemoveAt(position);
+		--queueLength;
+
+		// set the new state
+		customer.State = newState;
+
+		// move the custome leaving the queue to its new destination, via the queue exit waypoint
+		Vector3 newDestDirection = nextDestination.position - customer.transform.position;
+		newDestDirection.y = 0;
+		bool goRight = Vector3.Cross(customer.transform.forward, newDestDirection).y > 0;
+		Transform waypoint = goRight ? rightQueueExitWaypoint : leftQueueExitWaypoint;
+		customer.MovementController.SetDestination(waypoint.position, waypoint.forward);
+		customer.MovementController.SetNextDestination(nextDestination.position, nextDestination.forward);
+
+		// advance customers behind the customer who left the queue
+		StartCoroutine(QueueAdvancementCoroutine(position));
 	}
 
-	public void RemoveFromQueue(CustomerAI c)
+	IEnumerator QueueAdvancementCoroutine(int removedPosition)
 	{
-		StartCoroutine(RemoveFromQueueCoroutine(c));
-	}
+		UpdateQueuePriorities();
+		yield return new WaitForSeconds(2);
 
-	IEnumerator RemoveFromQueueCoroutine(CustomerAI c)
-	{
-		if (customers.Contains(c))
+		// advance the customers in the queue from th eempty spot onwards
+		int i = removedPosition;
+		for ( ; i < queueLength; ++i)
 		{
-			int position = customers.FindIndex(x => x == c);
-			customers.Remove(c);
-			c.State = CustomerAI.QueuingState.LeavingQueue;
-
-			NavMeshAgent agent = c.GetComponent<NavMeshAgent>();
-
-			bool goRight = c.StartPosition.z > 0;
-			agent.SetDestination(c.transform.right * 2 * spacing * (goRight ? 1 : -1));
-
-			agent.isStopped = false;
-
-			if (position < queuePositions.Count)
-			{
-				queuePositions.RemoveAt(queuePositions.Count - 1);
-			}
-			UpdateQueuePriorities();
-			yield return new WaitForSeconds(3);
-
-			for (int i = position; i < queuePositions.Count; ++i)
-			{
-				NavMeshAgent ag = customers[i].GetComponent<NavMeshAgent>();
-				ag.SetDestination(queuePositions[i]);
-				ag.isStopped = false;
-			}
-			for (int i = queuePositions.Count; i < customers.Count; ++i)
-			{
-				NavMeshAgent ag = customers[i].GetComponent<NavMeshAgent>();
-				ag.SetDestination(NextPositionGet());
-				ag.isStopped = false;
-			}
+			CustomerMovementController controller = queuingCustomers[i].MovementController;
+			controller.SetDestination(queuePositions[i].position, queuePositions[i].forward);
+		}
+		// update the destination of the customer walking towards the queue
+		for ( ; i < queuingCustomers.Count; ++i)
+		{
+			CustomerMovementController controller = queuingCustomers[i].MovementController;
+			Transform nextPosition = NextPositionGet();
+			controller.SetDestination(nextPosition.position, nextPosition.forward);
 		}
 	}
 
 	private void UpdateQueuePriorities()
 	{
 		int i = 0;
-		for ( ; i < queuePositions.Count; ++i)
+		// customers in the queue have decreasing priority values going from the front to the back of the queue
+		// NOTE: lower priority value means higher importance (see NavMeshAgent.avoidancePriority documentation)
+		for ( ; i < queueLength; ++i)
 		{
-			customers[i].GetComponent<NavMeshAgent>().avoidancePriority = queuePositions.Count - 1 - i;
+			queuingCustomers[i].MovementController.Agent.avoidancePriority = queueLength - 1 - i;
 		}
-		for (; i < customers.Count; ++i)
+		// customers walking towards the queue have higher priority values than the ones in the queue
+		for (; i < queuingCustomers.Count; ++i)
 		{
-			customers[i].GetComponent<NavMeshAgent>().avoidancePriority = 99;
+			queuingCustomers[i].MovementController.Agent.avoidancePriority = 99 - queuingCustomers.Count - 1 + i;
 		}
 	}
 
-	private Vector3 NextPositionGet()
+	private Transform NextPositionGet()
 	{
-		Vector3 startPosition = transform.position;
-		Vector3 targetPosition = startPosition - transform.forward * queuePositions.Count * spacing - transform.forward * spacing * alignmentDist;
-		return targetPosition;
+		if(queueLength >= queuePositions.Length)
+			return null;
+
+		return queuePositions[queueLength];
 	}
 }
