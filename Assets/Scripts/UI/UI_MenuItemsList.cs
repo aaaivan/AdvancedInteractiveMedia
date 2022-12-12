@@ -14,7 +14,7 @@ public class UI_MenuItemsList : MonoBehaviour
 		foreach(var i in CafeMenu.Instance.menuItemsMap[(int)type])
 		{
 			UI_MenuItem go = Instantiate(itemButton, gameObject.transform).GetComponent<UI_MenuItem>();
-			go.Initialise(i.Value);
+			go.Initialise(i);
 		}
 	}
 }

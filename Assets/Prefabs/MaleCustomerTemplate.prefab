@@ -18,7 +18,6 @@ GameObject:
   - component: {fileID: 8671628677066760106}
   - component: {fileID: 1615415805965083259}
   - component: {fileID: 1840297342646127354}
-  - component: {fileID: -9109038796157004088}
   m_Layer: 7
   m_Name: MaleCustomerTemplate
   m_TagString: Untagged
@@ -139,10 +138,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c78e3a09ee486864382661c6035fc1bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  randomFood: 1
-  randomDrink: 1
-  drink: 0
-  food: 0
+  drink: 4
+  food: 4
 --- !u!114 &8671628677066760106
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -186,15 +183,3 @@ MonoBehaviour:
   TextUI: {fileID: 0}
   CharacterPauseSeconds: 0.03
   Button: {fileID: 0}
---- !u!114 &-9109038796157004088
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 166070441765651651}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 684ea9bea0cfdc74cb24a1f515cf259e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

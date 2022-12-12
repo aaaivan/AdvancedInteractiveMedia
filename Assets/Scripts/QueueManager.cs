@@ -135,7 +135,7 @@ public class QueueManager : MonoBehaviour
 		newDestDirection.y = 0;
 		bool goRight = Vector3.Cross(customer.transform.forward, newDestDirection).y > 0;
 		Transform waypoint = goRight ? rightQueueExitWaypoint : leftQueueExitWaypoint;
-		customer.MovementController.SetDestination(waypoint.position, waypoint.forward);
+		customer.MovementController.SetDestination(waypoint.position + customer.transform.position - queuePositions[0].position, waypoint.forward);
 		customer.MovementController.SetNextDestination(nextDestination.position, nextDestination.forward);
 
 		// advance customers behind the customer who left the queue

@@ -27,11 +27,13 @@ public class UI_OrderItemsList : MonoBehaviour
 	[SerializeField]
 	UI_CancelOrderButton cancelOrderButton;
 
-	public delegate void ProcessOrder( List<CafeMenuItem> i, int table);
+	public delegate void ProcessOrder(List<CafeMenuItem> i, int table);
 	static public event ProcessOrder OnOrderSubmitted;
 
-	IEnumerator coroutine = null;
-	Dictionary<string, UI_OrderItem> itemsInList = new Dictionary<string, UI_OrderItem>();
+	public delegate void PaymentHandler(List<CafeMenuItem> i, int table, string total);
+	static public event PaymentHandler OnPaymentReady;
+
+	Dictionary<CafeMenuItem.MenuItemEnum, UI_OrderItem> itemsInList = new Dictionary<CafeMenuItem.MenuItemEnum, UI_OrderItem>();
 
 	float totalCost = 0;
 	public float TotalCost { get { return totalCost; }}
@@ -42,15 +44,16 @@ public class UI_OrderItemsList : MonoBehaviour
 		set { tableNumber = value; tableNumberText.text = string.Format(tableNumberString, tableNumber); }
 	}
 
-
 	private void OnEnable()
 	{
+		NewOrderDialog.OnOrderPaid += SubmitOrder;
 		UI_MenuItem.OnAddToOrder += AddItem;
 		UI_OrderItem.OnRemoveFromOrder += RemoveItem;
 	}
 
 	private void OnDisable()
 	{
+		NewOrderDialog.OnOrderPaid -= SubmitOrder;
 		UI_MenuItem.OnAddToOrder -= AddItem;
 		UI_OrderItem.OnRemoveFromOrder -= RemoveItem;
 	}
@@ -62,21 +65,21 @@ public class UI_OrderItemsList : MonoBehaviour
 
 	private void AddItem(CafeMenuItem _item)
 	{
-		if(itemsInList.ContainsKey(_item.itemName))
+		if(itemsInList.ContainsKey(_item.item))
 		{
-			itemsInList[_item.itemName].IncreaseQuantity();
+			itemsInList[_item.item].IncreaseQuantity();
 		}
 		else
 		{
 			UI_OrderItem orderItem = Instantiate(orderEntryPrefab.gameObject, listHolderObject).GetComponent<UI_OrderItem>();
-			itemsInList.Add(_item.itemName, orderItem);
+			itemsInList.Add(_item.item, orderItem);
 			orderItem.Initialise(_item);
 		}
 		totalCost += _item.price;
 		UpdateCostText();
 	}
 
-	private void RemoveItem(string _item)
+	private void RemoveItem(CafeMenuItem.MenuItemEnum _item)
 	{
 		if(itemsInList.ContainsKey(_item))
 		{
@@ -111,24 +114,28 @@ public class UI_OrderItemsList : MonoBehaviour
 		orderActionsPanel.gameObject.SetActive(false);
 		processPaymentPanel.gameObject.SetActive(true);
 		clearOrderButton.gameObject.SetActive(false);
-		coroutine = PaymentProcessingCoroutine();
-		StartCoroutine(coroutine);
+
+		if(OnPaymentReady != null)
+		{
+			List<CafeMenuItem> orderItems = new List<CafeMenuItem>();
+			foreach (var orderItem in itemsInList)
+			{
+				for (int i = 0; i < orderItem.Value.Quantity; i++)
+				{
+					CafeMenuItem item = orderItem.Value.Item;
+					orderItems.Add(item);
+				}
+			}
+
+			OnPaymentReady.Invoke(orderItems, tableNumber, totalCost.ToString("0.00"));
+		}
 	}
 
 	public void CancelPayment()
 	{
 		orderActionsPanel.gameObject.SetActive(true);
 		processPaymentPanel.gameObject.SetActive(false);
-		StopCoroutine(coroutine);
-		coroutine = null;
 		clearOrderButton.gameObject.SetActive(true);
-	}
-
-	IEnumerator PaymentProcessingCoroutine()
-	{
-		float waitTime = 3f;
-		yield return new WaitForSeconds(waitTime);
-		SubmitOrder();
 	}
 
 	private void SubmitOrder()

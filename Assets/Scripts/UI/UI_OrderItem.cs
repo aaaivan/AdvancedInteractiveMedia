@@ -15,7 +15,7 @@ public class UI_OrderItem : MonoBehaviour
 	int quantity;
 	public int Quantity { get { return quantity; } }
 
-	public delegate void RemoveFromOrder(string i);
+	public delegate void RemoveFromOrder(CafeMenuItem.MenuItemEnum i);
 	static public event RemoveFromOrder OnRemoveFromOrder;
 
 	private void Awake()
@@ -42,7 +42,7 @@ public class UI_OrderItem : MonoBehaviour
 		{
 			if(OnRemoveFromOrder != null)
 			{
-				OnRemoveFromOrder.Invoke(item.itemName);
+				OnRemoveFromOrder.Invoke(item.item);
 			}
 		}
 		else

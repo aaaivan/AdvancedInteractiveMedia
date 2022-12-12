@@ -4,71 +4,70 @@ using UnityEngine;
 
 public class CustomerOptions : MonoBehaviour
 {
-	[SerializeField]
-	bool randomFood = false;
-	[SerializeField]
-	bool randomDrink = false;
-
-	// Drinks
-	List<string> drinkNames = new List<string>{"Water", "Coke", "Lemonade", "Milkshake"};
-	public enum Drink
-	{
-		Water,
-		Coke,
-		Lemonade,
-		Milkshake,
-
-		NONE
-	};
-	[SerializeField]
-	Drink drink = Drink.Water;
-	public Drink DrinkItem => drink;
-
-	// Food
-	List<string> foodNames = new List<string> { "Burger", "Hot Dog", "Pizza", "Salad" };
-	public enum Food
-    {
-        Burger,
-        HotDog,
-        Pizza,
-        Salad,
-
-        NONE
-    };
-    [SerializeField]
-    Food food = Food.Burger;
-    public Food FoodItem => food;
-
-	private void Awake()
-	{
-		if(randomFood)
-		{
-			food = (Food)Random.Range(0, (int)Food.NONE);
-		}
-		if(randomDrink)
-		{
-			drink = (Drink)Random.Range(0, (int)Drink.NONE);
-		}
+	int tableNumber = 1;
+	public int TableNumber {
+		get { return tableNumber; }
+		set { tableNumber = value; }
 	}
 
-	public bool WantsToOrder()
-    {
-        return DrinkItem != Drink.NONE || FoodItem != Food.NONE;
-    }
+	List<CafeMenuItem> order = new List<CafeMenuItem>();
 
-	public string FoodNameGet(bool plural = false)
+	private void Start()
 	{
-		string result = food != Food.NONE ? foodNames[(int)food] : "";
-		if(result != "" && plural)
+		order.Add(CafeMenu.Instance.GetRandomItem(CafeMenuItem.MenuItemType.Drink));
+		int rand = Random.Range(0, 10);
+
+		if(rand % 3 == 0)
 		{
-			result = result + "s";
+			order.Add(CafeMenu.Instance.GetRandomItem(CafeMenuItem.MenuItemType.Side));
+			if(rand == 3)
+			{
+				order.Add(CafeMenu.Instance.GetRandomItem(CafeMenuItem.MenuItemType.Main));
+			}
+		}
+		else
+		{
+			order.Add(CafeMenu.Instance.GetRandomItem(CafeMenuItem.MenuItemType.Main));
+		}
+
+		order.Sort((a, b) => (a.item.CompareTo(b.item)));
+	}
+
+	public bool IsOrderMatching(List<CafeMenuItem> _items, int _tableNum)
+	{
+		if (_tableNum != tableNumber)
+			return false;
+		if(_items.Count != order.Count)
+			return false;
+
+		order.Sort((a, b) => (a.item.CompareTo(b.item)));
+		_items.Sort((a, b) => (a.item.CompareTo(b.item)));
+
+		for(int i = 0; i < order.Count; ++i)
+		{
+			if (order[i] != _items[i])
+				return false;
+		}
+		return true;
+	}
+
+	public string GetOrderString()
+	{
+		if(order.Count == 0)
+			return string.Empty;
+
+		string result = order[0].itemName;
+		int i = 1;
+		for (; i < order.Count - 1; ++i)
+		{
+			result += ", ";
+			result += order[i].itemName;
+		}
+		if (i == order.Count - 1)
+		{
+			result += " and ";
+			result += order[i].itemName;
 		}
 		return result;
 	}
-
-	public string DrinkNameGet()
-	{
-		return drink != Drink.NONE ? drinkNames[(int)drink] : "";
-	}
-
 }

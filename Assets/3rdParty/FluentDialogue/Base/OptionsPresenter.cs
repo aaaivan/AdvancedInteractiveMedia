@@ -173,13 +173,27 @@ namespace Fluent
         public virtual void Show()
         {
             DialogUI.SetActive(true);
-        }
+#if IVAN_OVERRIDE
+			InputsManager inputs = InputsManager.Instance;
+			if (inputs != null)
+			{
+				inputs.DisablePlayerMovement();
+			}
+#endif
+		}
 
-        public virtual void Hide()
+		public virtual void Hide()
         {
             DialogUI.SetActive(false);
-        }
+#if IVAN_OVERRIDE
+			InputsManager inputs = InputsManager.Instance;
+			if (inputs != null)
+			{
+				inputs.EnablePlayerMovement();
+			}
+#endif
+		}
 
-    }
+	}
 
 }

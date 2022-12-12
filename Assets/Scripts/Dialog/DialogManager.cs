@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class DialogManager : MonoBehaviour
@@ -36,5 +37,10 @@ public class DialogManager : MonoBehaviour
 		{
 			Destroy(gameObject);
 		}
+	}
+
+	public void SetSpeaker(string name)
+	{
+		dialogSpeakerField.GetComponentInChildren<TMP_Text>().text = name;
 	}
 }

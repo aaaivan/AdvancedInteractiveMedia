@@ -124,25 +124,11 @@ namespace Fluent
 
             gameAction.SetDoneCallback(ActionCompleted);
             FluentScripts.Add(gameAction);
-#if IVAN_OVERRIDE
-			InputsManager inputs = InputsManager.Instance;
-			if(inputs != null)
-			{
-				inputs.DisablePlayerMovement();
-			}
-#endif
 			gameAction.Run();
         }
 
         private void ActionCompleted(FluentScript fluentScript)
         {
-#if IVAN_OVERRIDE
-			InputsManager inputs = InputsManager.Instance;
-			if (inputs != null)
-			{
-				inputs.EnablePlayerMovement();
-			}
-#endif
 			FluentScripts.Remove(fluentScript);
 			// The action just completed
 			// The action initiator could have been stopped from adding this action as a viable action
@@ -154,7 +140,6 @@ namespace Fluent
                 if (newGameAction != null)
                     AddAction(newGameAction, fluentScript.Initiator);
             }*/
-
 		}
 
 		public void ExecuteClosestAction(GameObject closestToWhat)
