@@ -12,32 +12,24 @@ public class ExitTabletView : MonoBehaviour, InteractableObject
 	[SerializeField]
 	GameObject enterTrigger;
 
-	TabletViewControls controls;
-
-	private void Awake()
-	{
-		controls = new TabletViewControls();
-		controls.Disable();
-	}
-
 	private void OnEnable()
 	{
-		controls.Enable();
-		controls.TabletView.Exit.performed += ctx => DoInteraction();
-		controls.TabletView.Click.performed += ctx => DoRaycast();
+		InputsManager inputsManager = InputsManager.Instance;
+		inputsManager.EnableInputsByType(InputsManager.InputsType.Tablet);
+		inputsManager.TabletControls.TabletView.Exit.performed += ctx => DoInteraction();
+		inputsManager.TabletControls.TabletView.Click.performed += ctx => DoRaycast();
 	}
 	private void OnDisable()
 	{
-		controls.TabletView.Click.performed += ctx => DoRaycast();
-		controls.TabletView.Exit.performed -= ctx => DoInteraction();
-		controls.Disable();
+		InputsManager inputsManager = InputsManager.Instance;
+		inputsManager.TabletControls.TabletView.Click.performed += ctx => DoRaycast();
+		inputsManager.TabletControls.TabletView.Exit.performed -= ctx => DoInteraction();
+		inputsManager.DisableInputsByType(InputsManager.InputsType.Tablet);
 	}
 
 	public void DoInteraction()
 	{
-		InputsManager.Instance.EnablePlayerMovement();
 		cam.enabled = false;
-		enterTrigger.SetActive(true);
 		gameObject.SetActive(false);
 	}
 

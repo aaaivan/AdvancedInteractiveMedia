@@ -300,5 +300,11 @@ namespace StarterAssets
 			PlayerInput input = GetComponent<PlayerInput>();
 			input.actions.Enable();
 		}
+
+		public bool AreGameInputsEnabled()
+		{
+			PlayerInput input = GetComponent<PlayerInput>();
+			return input.actions.enabled;
+		}
 	}
 }

@@ -5,22 +5,20 @@ using UnityEngine;
 
 public class DialogInputsController : MonoBehaviour
 {
-	UIControls uiControls;
-
-	private void Awake()
-	{
-		uiControls = new UIControls();
-	}
-
 	private void OnEnable()
 	{
-		uiControls.Enable();
-		uiControls.UI.DismissUI.performed += ctx => DismissUi();
+		InputsManager inputsManager = InputsManager.Instance;
+		inputsManager.EnableInputsByType(InputsManager.InputsType.Dialog);
+
+		inputsManager.DialogControls.Enable();
+		inputsManager.DialogControls.UI.DismissUI.performed += ctx => DismissUi();
 	}
 	private void OnDisable()
 	{
-		uiControls.UI.DismissUI.performed -= ctx => DismissUi();
-		uiControls.Disable();
+		InputsManager inputsManager = InputsManager.Instance;
+
+		inputsManager.DialogControls.UI.DismissUI.performed -= ctx => DismissUi();
+		inputsManager.DisableInputsByType(InputsManager.InputsType.Dialog);
 	}
 
 	private void DismissUi()

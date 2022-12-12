@@ -37,6 +37,9 @@ public class NewOrderDialog : FluentScript, InteractableObject
 
 	void PaymentHandler(List<CafeMenuItem> items, int tableNum, string total)
 	{
+		if (!FluentManager.Instance.GetActiveDialogs().Contains(this))
+			return;
+
 		isReadyToPay = true;
 		isOrderCorrect = orderOptions.IsOrderMatching(items, tableNum);
 		totalToPay = total;
@@ -78,7 +81,7 @@ public class NewOrderDialog : FluentScript, InteractableObject
 				If(() => !isOrderCorrect,
 					Do(() => DialogManager.Instance.SetSpeaker("Customer")) *
 					Write("The order is wrong.").WaitForButton() *
-					Write(Eval(() => "Can I have " + orderOptions.GetOrderString() + ", please?")).WaitForButton()
+					Write(Eval(() => "Can I have " + orderOptions.GetOrderString() + " at table " + orderOptions.TableNumber.ToString() + ", please?")).WaitForButton()
 				) *
 
 				Do(() => isReadyToPay = false) *
