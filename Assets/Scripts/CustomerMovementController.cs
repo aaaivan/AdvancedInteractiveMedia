@@ -53,7 +53,7 @@ public class CustomerMovementController : MonoBehaviour
 			transform.position = rootPos;
 			agent.nextPosition = rootPos;
 		}
-		else if(isRotating)
+		else
 		{
 			// Apply the rotation to the transform
 			transform.rotation = animator.rootRotation;
@@ -186,7 +186,6 @@ public class CustomerMovementController : MonoBehaviour
 
 		// set animator parameters
 		animator.SetBool("IsRotating", false);
-		animator.SetFloat("RotationSpeed", 0.0f);
 		smoothDeltaAngle = 0;
 
 		yield return null;
