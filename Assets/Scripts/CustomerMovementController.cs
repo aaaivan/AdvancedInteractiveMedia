@@ -137,8 +137,6 @@ public class CustomerMovementController : MonoBehaviour
 					agent.ResetPath();
 					agent.updateRotation = false;
 					isMoving = false;
-					if(OnDestinationReached != null)
-						OnDestinationReached.Invoke(this);
 				}
 			}
 			yield return null;
@@ -183,6 +181,9 @@ public class CustomerMovementController : MonoBehaviour
 
 			yield return null;
 		}
+
+		if (OnDestinationReached != null)
+			OnDestinationReached.Invoke(this);
 
 		// set animator parameters
 		animator.SetBool("IsRotating", false);
