@@ -123,6 +123,7 @@ public class NewOrderDialog : FluentScript, InteractableObject
 			Write(2.0f, "Thank you.") *
 			
 			Hide() *
-			Do(() => animator.SetBool(speakingAnim, false));
+			Do(() => animator.SetBool(speakingAnim, false)) *
+			Do(() => customer.LeaveQueue());
 	}
 }

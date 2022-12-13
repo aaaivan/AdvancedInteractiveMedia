@@ -4,10 +4,14 @@ using UnityEngine;
 
 public class CustomerAI : MonoBehaviour
 {
-	public Transform chair;
-	public Transform exit;
+	[SerializeField]
+	Transform chair; // chair game object
+	Chair chairPivot; // pivot of the chair that will be translated to move the chair
+	Transform chairStandingPos; // location where the customer should be standing before sitting on the chair
 
 	CustomerMovementController movementController;
+	Animator animator;
+
 	public CustomerMovementController MovementController { get { return movementController; } }
 
 	public enum CustomerState
@@ -27,10 +31,24 @@ public class CustomerAI : MonoBehaviour
 		set { state = value; }
 	}
 
+	private void OnEnable()
+	{
+		CustomerMovementController.OnDestinationReached += OnTableReached;
+	}
+
+	private void OnDisable()
+	{
+		CustomerMovementController.OnDestinationReached -= OnTableReached;
+	}
+
 	private void Awake()
 	{
 		movementController = GetComponent<CustomerMovementController>();
+		animator= GetComponent<Animator>();
 		state = CustomerState.None;
+
+		chairPivot = chair.transform.Find("Pivot").GetComponent<Chair>();
+		chairStandingPos = chairPivot.transform.Find("StandingPos");
 	}
 
 	private void Start()
@@ -45,7 +63,16 @@ public class CustomerAI : MonoBehaviour
 
 	public void LeaveQueue()
 	{
-		QueueManager.Instance.RemoveFromQueue(this, chair, CustomerState.MovingToTable);
+		QueueManager.Instance.RemoveFromQueue(this, chairStandingPos, CustomerState.MovingToTable);
+	}
+
+	private void OnTableReached(CustomerMovementController controller)
+	{
+		if (state != CustomerState.MovingToTable)
+			return;
+
+		animator.SetTrigger("DoSitDown");
+		chairPivot.TranslateToPosition(this, 4f);
 	}
 
 	private void Update()
