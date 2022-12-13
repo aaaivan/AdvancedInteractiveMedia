@@ -64,6 +64,8 @@ namespace StarterAssets
 		// timeout deltatime
 		private float _jumpTimeoutDelta;
 		private float _fallTimeoutDelta;
+
+		private bool _ignoreInput = false;
 	
 #if ENABLE_INPUT_SYSTEM && STARTER_ASSETS_PACKAGES_CHECKED
 		private PlayerInput _playerInput;
@@ -112,6 +114,9 @@ namespace StarterAssets
 
 		private void Update()
 		{
+			if (_ignoreInput)
+				return;
+
 			JumpAndGravity();
 			GroundedCheck();
 			Move();
@@ -120,6 +125,9 @@ namespace StarterAssets
 
 		private void LateUpdate()
 		{
+			if (_ignoreInput)
+				return;
+
 			CameraRotation();
 		}
 
@@ -294,11 +302,17 @@ namespace StarterAssets
 		{
 			PlayerInput input = GetComponent<PlayerInput>();
 			input.actions.Disable();
+			_speed = 0;
+			_rotationVelocity = 0;
+			_input.look = Vector2.zero;
+			_input.move = Vector2.zero;
+			_ignoreInput = true;
 		}
 		public void EnableGameInputs()
 		{
 			PlayerInput input = GetComponent<PlayerInput>();
 			input.actions.Enable();
+			_ignoreInput = false;
 		}
 
 		public bool AreGameInputsEnabled()
