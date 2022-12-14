@@ -15,6 +15,7 @@ public class NewOrderDialog : FluentScript, InteractableObject
 	bool hasPaid = false;
 
 	bool wasDrinkGiven = false;
+	bool hasPickedUpDrink = false;
 
 	string totalToPay = string.Empty;
 
@@ -23,6 +24,7 @@ public class NewOrderDialog : FluentScript, InteractableObject
 
 	const string speakingAnim = "IsTalking";
 	const string paymentAnim = "DoPayment";
+	const string pickUpAnim = "DoPickUp";
 
 	private void OnEnable()
 	{
@@ -49,6 +51,7 @@ public class NewOrderDialog : FluentScript, InteractableObject
 		isReadyToPay = false;
 		isOrderCorrect = false;
 		hasPaid = false;
+		hasPickedUpDrink = false;
 	}
 
 	void PaymentHandler(List<PubMenuItemData> items, int tableNum, string total)
@@ -77,11 +80,6 @@ public class NewOrderDialog : FluentScript, InteractableObject
 		FluentManager.Instance.ExecuteAction(this);
 	}
 
-	public void OnAnimationButtonPressed()
-	{
-		hasPaid = true;
-	}
-
 	bool IsDrinkOnMat()
 	{
 		DrinksMat mat = LevelManager.Instance.DrinksMat;
@@ -106,6 +104,16 @@ public class NewOrderDialog : FluentScript, InteractableObject
 	{
 		DrinksMat mat = LevelManager.Instance.DrinksMat;
 		return mat.transform.GetChild(0).gameObject;
+	}
+
+	public void OnAnimationButtonPressed()
+	{
+		hasPaid = true;
+	}
+
+	public void OnAnimationPickUpObject()
+	{
+		hasPickedUpDrink = true;
 	}
 
 	public override FluentNode Create()
@@ -184,8 +192,10 @@ public class NewOrderDialog : FluentScript, InteractableObject
 					Do(() => animator.SetBool(speakingAnim, false))
 				)
 			) *
-			// TODO: add pickup gesture anymation and continue dialog at the end of gesture
+
 			Do(() => GetDrinkOnMat().GetComponent<PubMenuItem>().Interactable = false) *
+			Do(() => animator.SetTrigger(pickUpAnim)) *
+			ContinueWhen(() => hasPickedUpDrink) *
 			Do(() => GetDrinkOnMat().transform.parent = transform.Find("Inventory")) *
 
 			Show() *
