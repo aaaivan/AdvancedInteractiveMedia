@@ -5,13 +5,13 @@ using UnityEngine;
 public class UI_MenuItemsList : MonoBehaviour
 {
 	[SerializeField]
-	CafeMenuItem.MenuItemType type;
+	PubMenuItemData.MenuItemType type;
 	[SerializeField]
 	GameObject itemButton;
 
 	private void Start()
 	{
-		foreach(var i in CafeMenu.Instance.menuItemsMap[(int)type])
+		foreach(var i in PubMenu.Instance.menuItemsMap[(int)type])
 		{
 			UI_MenuItem go = Instantiate(itemButton, gameObject.transform).GetComponent<UI_MenuItem>();
 			go.Initialise(i);

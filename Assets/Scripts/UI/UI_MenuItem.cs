@@ -10,12 +10,12 @@ public class UI_MenuItem : MonoBehaviour
 	[SerializeField]
 	TMP_Text text;
 
-	CafeMenuItem item;
+	PubMenuItemData item;
 
-	public delegate void AddToOrder(CafeMenuItem i);
+	public delegate void AddToOrder(PubMenuItemData i);
 	static public event AddToOrder OnAddToOrder;
 
-	public void Initialise(CafeMenuItem _item)
+	public void Initialise(PubMenuItemData _item)
 	{
 		item = _item;
 		text.text = string.Format(displayText, item.itemName, item.price.ToString("0.00"));

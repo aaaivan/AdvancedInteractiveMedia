@@ -276,9 +276,12 @@ namespace StarterAssets
 
 		private void Interact()
 		{
-			if (_input.interact)
+			if (_input.interact || _input.secondaryInteract)
 			{
+				bool primary = _input.interact;
 				_input.interact = false;
+				_input.secondaryInteract = false;
+
 				int layer_mask = LayerMask.GetMask("Interactable");
 				Vector2 screencenterPoint = new Vector2(Screen.width / 2, Screen.height / 2);
 
@@ -291,7 +294,7 @@ namespace StarterAssets
 					{
 						if (obj != null)
 						{
-							obj.DoInteraction();
+							obj.DoInteraction(primary);
 						}
 					}
 				}

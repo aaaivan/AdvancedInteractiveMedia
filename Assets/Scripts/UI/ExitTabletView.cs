@@ -16,18 +16,18 @@ public class ExitTabletView : MonoBehaviour, InteractableObject
 	{
 		InputsManager inputsManager = InputsManager.Instance;
 		inputsManager.EnableInputsByType(InputsManager.InputsType.Tablet);
-		inputsManager.TabletControls.TabletView.Exit.performed += ctx => DoInteraction();
+		inputsManager.TabletControls.TabletView.Exit.performed += ctx => DoInteraction(true);
 		inputsManager.TabletControls.TabletView.Click.performed += ctx => DoRaycast();
 	}
 	private void OnDisable()
 	{
 		InputsManager inputsManager = InputsManager.Instance;
 		inputsManager.TabletControls.TabletView.Click.performed += ctx => DoRaycast();
-		inputsManager.TabletControls.TabletView.Exit.performed -= ctx => DoInteraction();
+		inputsManager.TabletControls.TabletView.Exit.performed -= ctx => DoInteraction(true);
 		inputsManager.DisableInputsByType(InputsManager.InputsType.Tablet);
 	}
 
-	public void DoInteraction()
+	public void DoInteraction(bool primary)
 	{
 		cam.enabled = false;
 		gameObject.SetActive(false);
@@ -43,7 +43,7 @@ public class ExitTabletView : MonoBehaviour, InteractableObject
 		{
 			if (hit.transform.gameObject == gameObject)
 			{
-				DoInteraction();
+				DoInteraction(true);
 			}
 		}
 	}

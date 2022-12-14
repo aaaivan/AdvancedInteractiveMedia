@@ -8,7 +8,7 @@ public class UI_FoodPrepList : MonoBehaviour
 	[SerializeField]
 	UI_FoodItemPrep foodItemPrefab;
 	List<GameObject> foodItemEntries = new List<GameObject>();
-	Queue<Tuple<CafeMenuItem, int>> queueForCounter = new Queue<Tuple<CafeMenuItem, int>>();
+	Queue<Tuple<PubMenuItemData, int>> queueForCounter = new Queue<Tuple<PubMenuItemData, int>>();
 
 	private void OnEnable()
 	{
@@ -22,9 +22,9 @@ public class UI_FoodPrepList : MonoBehaviour
 		UI_OrderItemsList.OnOrderSubmitted -= AddFoodItemsToList;
 	}
 
-	private void AddFoodItemsToList(List<CafeMenuItem> _foodItems, int tableNum)
+	private void AddFoodItemsToList(List<PubMenuItemData> _foodItems, int tableNum)
 	{
-		foreach (CafeMenuItem item in _foodItems)
+		foreach (PubMenuItemData item in _foodItems)
 		{
 			GameObject go = Instantiate(foodItemPrefab.gameObject, transform);
 			UI_FoodItemPrep foodItem = go.GetComponent<UI_FoodItemPrep>();
@@ -42,12 +42,12 @@ public class UI_FoodPrepList : MonoBehaviour
 			{
 				if(!FoodSpawningManager.Instance.TrySpawnFood(readyItem.FoodItem, readyItem.TableNumber))
 				{
-					queueForCounter.Enqueue(new Tuple<CafeMenuItem, int>(readyItem.FoodItem, readyItem.TableNumber));
+					queueForCounter.Enqueue(new Tuple<PubMenuItemData, int>(readyItem.FoodItem, readyItem.TableNumber));
 				}
 			}
 			else
 			{
-				queueForCounter.Enqueue(new Tuple<CafeMenuItem, int>(readyItem.FoodItem, readyItem.TableNumber));
+				queueForCounter.Enqueue(new Tuple<PubMenuItemData, int>(readyItem.FoodItem, readyItem.TableNumber));
 			}
 			Destroy(foodItemEntry);
 		}
@@ -57,7 +57,7 @@ public class UI_FoodPrepList : MonoBehaviour
 	{
 		if (queueForCounter.Count > 0)
 		{
-			Tuple<CafeMenuItem, int> readyItem = queueForCounter.Peek();
+			Tuple<PubMenuItemData, int> readyItem = queueForCounter.Peek();
 			if (FoodSpawningManager.Instance.TrySpawnFood(readyItem.Item1, readyItem.Item2))
 			{
 				queueForCounter.Dequeue();

@@ -13,8 +13,8 @@ public class UI_FoodItemPrep : MonoBehaviour
 	[SerializeField]
 	string itemString = "T{0} - {1}";
 
-	CafeMenuItem foodItem;
-	public CafeMenuItem FoodItem { get { return foodItem; } }
+	PubMenuItemData foodItem;
+	public PubMenuItemData FoodItem { get { return foodItem; } }
 
 	float prepStartTime = 0;
 	bool isReady = true;
@@ -29,7 +29,7 @@ public class UI_FoodItemPrep : MonoBehaviour
 		slider.value = 0;
 	}
 
-	public void Initialise(CafeMenuItem _foodItem, int _tableNum)
+	public void Initialise(PubMenuItemData _foodItem, int _tableNum)
 	{
 		foodItem = _foodItem;
 		tableNumber = _tableNum;

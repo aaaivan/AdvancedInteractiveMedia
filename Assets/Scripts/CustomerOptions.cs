@@ -10,30 +10,30 @@ public class CustomerOptions : MonoBehaviour
 		set { tableNumber = value; }
 	}
 
-	List<CafeMenuItem> order = new List<CafeMenuItem>();
+	List<PubMenuItemData> order = new List<PubMenuItemData>();
 
 	private void Start()
 	{
-		order.Add(CafeMenu.Instance.GetRandomItem(CafeMenuItem.MenuItemType.Drink));
+		order.Add(PubMenu.Instance.GetRandomItem(PubMenuItemData.MenuItemType.Drink));
 		int rand = Random.Range(0, 10);
 
 		if(rand % 3 == 0)
 		{
-			order.Add(CafeMenu.Instance.GetRandomItem(CafeMenuItem.MenuItemType.Side));
+			order.Add(PubMenu.Instance.GetRandomItem(PubMenuItemData.MenuItemType.Side));
 			if(rand == 3)
 			{
-				order.Add(CafeMenu.Instance.GetRandomItem(CafeMenuItem.MenuItemType.Main));
+				order.Add(PubMenu.Instance.GetRandomItem(PubMenuItemData.MenuItemType.Main));
 			}
 		}
 		else
 		{
-			order.Add(CafeMenu.Instance.GetRandomItem(CafeMenuItem.MenuItemType.Main));
+			order.Add(PubMenu.Instance.GetRandomItem(PubMenuItemData.MenuItemType.Main));
 		}
 
 		order.Sort((a, b) => (a.item.CompareTo(b.item)));
 	}
 
-	public bool IsOrderMatching(List<CafeMenuItem> _items, int _tableNum)
+	public bool IsOrderMatching(List<PubMenuItemData> _items, int _tableNum)
 	{
 		if (_tableNum != tableNumber)
 			return false;
@@ -69,5 +69,25 @@ public class CustomerOptions : MonoBehaviour
 			result += order[i].itemName;
 		}
 		return result;
+	}
+
+	public bool HasDrink()
+	{
+		for (int i = 0; i < order.Count; ++i)
+		{
+			if (order[i].type == PubMenuItemData.MenuItemType.Drink)
+				return true;
+		}
+		return false;
+	}
+
+	public PubMenuItemData GetDrink()
+	{
+		for (int i = 0; i < order.Count; ++i)
+		{
+			if (order[i].type == PubMenuItemData.MenuItemType.Drink)
+				return order[i];
+		}
+		return null;
 	}
 }

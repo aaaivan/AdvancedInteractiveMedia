@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class CafeMenuItem
+public class PubMenuItemData
 {
 	public enum MenuItemEnum
 	{
@@ -19,6 +19,8 @@ public class CafeMenuItem
 		Water,
 		Coke,
 		Lemonade,
+
+		None,
 	};
 
 	public enum MenuItemType

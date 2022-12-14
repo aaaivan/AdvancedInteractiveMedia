@@ -9,7 +9,7 @@ public class EnterTabletView : MonoBehaviour, InteractableObject
 	CinemachineVirtualCamera cam;
 	[SerializeField]
 	GameObject exitTrigger;
-	public void DoInteraction()
+	public void DoInteraction(bool primary)
 	{
 		cam.enabled = true;
 		exitTrigger.SetActive(true);

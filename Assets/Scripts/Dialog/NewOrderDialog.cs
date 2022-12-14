@@ -1,6 +1,7 @@
 using Fluent;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class NewOrderDialog : FluentScript, InteractableObject
@@ -13,6 +14,10 @@ public class NewOrderDialog : FluentScript, InteractableObject
 	bool isOrderCorrect = false;
 	bool hasPaid = false;
 
+	bool wasDrinkGiven = false;
+	bool isDrinkCorrect = false;
+	GameObject drinkGO = null;
+
 	string totalToPay = string.Empty;
 
 	public delegate void OrderPaidHandler();
@@ -24,11 +29,13 @@ public class NewOrderDialog : FluentScript, InteractableObject
 	private void OnEnable()
 	{
 		UI_OrderItemsList.OnPaymentReady += PaymentHandler;
+		DrinksMat.OnDrinkPutOnMat += DrinkPickUpHandler;
 	}
 
 	private void OnDisable()
 	{
 		UI_OrderItemsList.OnPaymentReady -= PaymentHandler;
+		DrinksMat.OnDrinkPutOnMat -= DrinkPickUpHandler;
 	}
 
 	private new void Awake()
@@ -46,7 +53,7 @@ public class NewOrderDialog : FluentScript, InteractableObject
 		hasPaid = false;
 	}
 
-	void PaymentHandler(List<CafeMenuItem> items, int tableNum, string total)
+	void PaymentHandler(List<PubMenuItemData> items, int tableNum, string total)
 	{
 		if (!FluentManager.Instance.GetActiveDialogs().Contains(this))
 			return;
@@ -56,7 +63,25 @@ public class NewOrderDialog : FluentScript, InteractableObject
 		totalToPay = total;
 	}
 
-	public void DoInteraction()
+	void DrinkPickUpHandler(GameObject drink)
+	{
+		if (!FluentManager.Instance.GetActiveDialogs().Contains(this))
+			return;
+
+		wasDrinkGiven = true;
+		isDrinkCorrect = false;
+		PubMenuItem menuItem = drink.GetComponent<PubMenuItem>();
+		if (menuItem == null)
+			return;
+
+		if(menuItem.ItemData.item == orderOptions.GetDrink().item)
+		{
+			isDrinkCorrect = true;
+			drinkGO = drink;
+		}
+	}
+
+	public void DoInteraction(bool primary)
 	{
 		if (customer.State != CustomerAI.CustomerState.FrontOfTheQueue)
 			return;
@@ -64,7 +89,7 @@ public class NewOrderDialog : FluentScript, InteractableObject
 		FluentManager.Instance.ExecuteAction(this);
 	}
 
-	public void OnButtonPressed()
+	public void OnAnimationButtonPressed()
 	{
 		hasPaid = true;
 	}
@@ -92,13 +117,13 @@ public class NewOrderDialog : FluentScript, InteractableObject
 			Hide() *
 			Do(() => animator.SetBool(speakingAnim, false)) *
 
-			While(()=>!isOrderCorrect,
+			While(() => !isOrderCorrect,
 				ContinueWhen(() => isReadyToPay) *
 				Show() *
 
 				Do(() => DialogManager.Instance.SetSpeaker("You")) *
 				Do(() => animator.SetBool(speakingAnim, false)) *
-				Write(Eval(()=>"It's £" + totalToPay)).WaitForButton() *
+				Write(Eval(() => "It's £" + totalToPay)).WaitForButton() *
 
 				If(() => !isOrderCorrect,
 					Do(() => DialogManager.Instance.SetSpeaker("Customer")) *
@@ -113,9 +138,38 @@ public class NewOrderDialog : FluentScript, InteractableObject
 			) *
 
 			Do(() => animator.SetTrigger(paymentAnim)) *
-			Do(() => GameObject.Find("Tablet").GetComponentInChildren<ExitTabletView>().DoInteraction()) *
+			Do(() => GameObject.Find("Tablet").GetComponentInChildren<ExitTabletView>().DoInteraction(true)) *
 			ContinueWhen(() => hasPaid) *
 			If(() => OnOrderPaid != null, Do(() => OnOrderPaid.Invoke())) *
+
+			If(() => orderOptions.HasDrink(),
+				If(() => !wasDrinkGiven,
+					Show() *
+					Do(() => DialogManager.Instance.SetSpeaker("You")) *
+					Do(() => animator.SetBool(speakingAnim, false)) *
+					Write("Let me get your drink.").WaitForButton() *
+					Hide()
+				) *
+
+				While(() => !isDrinkCorrect,
+					ContinueWhen(() => wasDrinkGiven) *
+					Show() *
+
+					If(() => !isDrinkCorrect,
+						Do(() => DialogManager.Instance.SetSpeaker("Customer")) *
+						Do(() => animator.SetBool(speakingAnim, true)) *
+						Write("This is the wrong drink.").WaitForButton() *
+						Write(Eval(() => "Can I have some " + orderOptions.GetDrink().itemName + ", please?")).WaitForButton()
+					) *
+
+					Do(() => wasDrinkGiven = false) *
+					Hide() *
+					Do(() => animator.SetBool(speakingAnim, false))
+				)
+			) *
+			// TODO: make drink not interactable anymore
+			// TODO: add pickup gesture anymation and continue dialog at the end of gesture
+			Do(() => { drinkGO.transform.parent = transform; drinkGO.SetActive(false); }) *
 
 			Show() *
 			Do(() => DialogManager.Instance.SetSpeaker("Customer")) *

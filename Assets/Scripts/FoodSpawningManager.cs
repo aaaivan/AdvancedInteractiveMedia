@@ -33,15 +33,15 @@ public class FoodSpawningManager : MonoBehaviour
 		}
 	}
 
-	public bool TrySpawnFood(CafeMenuItem food, int tableNum)
+	public bool TrySpawnFood(PubMenuItemData food, int tableNum)
 	{
 		Transform t = GetNextFreeSpot();
 		if(t == null)
 			return false;
 
-		GameObject go = Instantiate(food.prefab, t);
-		FoodDrinkItem fdi = go.GetComponent<FoodDrinkItem>();
-		fdi.Initialise(tableNum);
+		GameObject go = PubMenuItem.InstatiateItem(food, t);
+		PubMenuItem fdi = go.GetComponent<PubMenuItem>();
+		fdi.ShowTableUI(tableNum);
 		return true;
 	}
 

@@ -10,12 +10,12 @@ public class UI_OrderItem : MonoBehaviour
 	[SerializeField]
 	TMP_Text text;
 
-	CafeMenuItem item;
-	public CafeMenuItem Item { get {return item;} }
+	PubMenuItemData item;
+	public PubMenuItemData Item { get {return item;} }
 	int quantity;
 	public int Quantity { get { return quantity; } }
 
-	public delegate void RemoveFromOrder(CafeMenuItem.MenuItemEnum i);
+	public delegate void RemoveFromOrder(PubMenuItemData.MenuItemEnum i);
 	static public event RemoveFromOrder OnRemoveFromOrder;
 
 	private void Awake()
@@ -23,7 +23,7 @@ public class UI_OrderItem : MonoBehaviour
 		quantity = 1;
 	}
 
-	public void Initialise(CafeMenuItem _item)
+	public void Initialise(PubMenuItemData _item)
 	{
 		item = _item;
 		text.text = string.Format(displayText, quantity, item.itemName);

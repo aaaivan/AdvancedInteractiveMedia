@@ -27,13 +27,13 @@ public class UI_OrderItemsList : MonoBehaviour
 	[SerializeField]
 	UI_CancelOrderButton cancelOrderButton;
 
-	public delegate void ProcessOrder(List<CafeMenuItem> i, int table);
+	public delegate void ProcessOrder(List<PubMenuItemData> i, int table);
 	static public event ProcessOrder OnOrderSubmitted;
 
-	public delegate void PaymentHandler(List<CafeMenuItem> i, int table, string total);
+	public delegate void PaymentHandler(List<PubMenuItemData> i, int table, string total);
 	static public event PaymentHandler OnPaymentReady;
 
-	Dictionary<CafeMenuItem.MenuItemEnum, UI_OrderItem> itemsInList = new Dictionary<CafeMenuItem.MenuItemEnum, UI_OrderItem>();
+	Dictionary<PubMenuItemData.MenuItemEnum, UI_OrderItem> itemsInList = new Dictionary<PubMenuItemData.MenuItemEnum, UI_OrderItem>();
 
 	float totalCost = 0;
 	public float TotalCost { get { return totalCost; }}
@@ -63,7 +63,7 @@ public class UI_OrderItemsList : MonoBehaviour
 		UpdateCostText();
 	}
 
-	private void AddItem(CafeMenuItem _item)
+	private void AddItem(PubMenuItemData _item)
 	{
 		if(itemsInList.ContainsKey(_item.item))
 		{
@@ -79,7 +79,7 @@ public class UI_OrderItemsList : MonoBehaviour
 		UpdateCostText();
 	}
 
-	private void RemoveItem(CafeMenuItem.MenuItemEnum _item)
+	private void RemoveItem(PubMenuItemData.MenuItemEnum _item)
 	{
 		if(itemsInList.ContainsKey(_item))
 		{
@@ -117,12 +117,12 @@ public class UI_OrderItemsList : MonoBehaviour
 
 		if(OnPaymentReady != null)
 		{
-			List<CafeMenuItem> orderItems = new List<CafeMenuItem>();
+			List<PubMenuItemData> orderItems = new List<PubMenuItemData>();
 			foreach (var orderItem in itemsInList)
 			{
 				for (int i = 0; i < orderItem.Value.Quantity; i++)
 				{
-					CafeMenuItem item = orderItem.Value.Item;
+					PubMenuItemData item = orderItem.Value.Item;
 					orderItems.Add(item);
 				}
 			}
@@ -140,13 +140,13 @@ public class UI_OrderItemsList : MonoBehaviour
 
 	private void SubmitOrder()
 	{
-		List<CafeMenuItem> orderItems = new List<CafeMenuItem>();
+		List<PubMenuItemData> orderItems = new List<PubMenuItemData>();
 		foreach (var orderItem in itemsInList)
 		{
 			for (int i = 0; i < orderItem.Value.Quantity; i++)
 			{
-				CafeMenuItem item = orderItem.Value.Item;
-				if(item.type != CafeMenuItem.MenuItemType.Drink)
+				PubMenuItemData item = orderItem.Value.Item;
+				if(item.type != PubMenuItemData.MenuItemType.Drink)
 				{
 					orderItems.Add(item);
 				}
