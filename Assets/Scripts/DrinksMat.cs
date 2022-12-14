@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,21 +20,18 @@ public class DrinksMat : MonoBehaviour, InteractableObject
 
 	public void DoInteraction(bool primary)
 	{
-		if (!primary)
-		{
-			if (transform.childCount > 0)
-				return;
+		if (transform.childCount > 0)
+			return;
 
-			PlayerInventory.Instance.RemoveFromInventoryByType(true, AddDrinkToMat);
-		}
+		Func<PubMenuItem, bool> condition = (item) => { return item.ItemData.type == PubMenuItemData.MenuItemType.Drink; };
+		PlayerInventory.Instance.RemoveFromInventoryByCondition(condition, transform, AddDrinkToMat);
 	}
 
-	void AddDrinkToMat(PubMenuItemData drink)
+	void AddDrinkToMat(PubMenuItem drink)
 	{
-		GameObject go = PubMenuItem.InstatiateItem(drink, transform);
 		if(OnDrinkPutOnMat != null)
 		{
-			OnDrinkPutOnMat.Invoke(go);
+			OnDrinkPutOnMat.Invoke(drink.gameObject);
 		}
 	}
 }

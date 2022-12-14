@@ -5,8 +5,8 @@ using UnityEngine;
 public class LevelManager : MonoBehaviour
 {
 	[SerializeField]
-	DrinksMat drinksRestMat;
-	public DrinksMat DrinksRestMat { get { return drinksRestMat; } }
+	DrinksMat drinksMat;
+	public DrinksMat DrinksMat { get { return drinksMat; } }
 
 	static LevelManager instance;
 	public static LevelManager Instance { get { return instance; } }

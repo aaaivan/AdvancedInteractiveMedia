@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,11 +13,14 @@ public class Fridge : MonoBehaviour, InteractableObject
 	{
 		if(primary)
 		{
-			PlayerInventory.Instance.AddToInventory(PubMenu.Instance.GetItem(PubMenuItemData.MenuItemType.Drink, drink));
+			PubMenuItemData drinkData = PubMenu.Instance.GetItem(PubMenuItemData.MenuItemType.Drink, drink);
+			GameObject go = PubMenuItem.InstatiateItem(drinkData, transform);
+			PlayerInventory.Instance.AddToInventory(go.GetComponent<PubMenuItem>());
 		}
 		else
 		{
-			PlayerInventory.Instance.RemoveFromInventory(PubMenu.Instance.GetItem(PubMenuItemData.MenuItemType.Drink, drink));
+			Func<PubMenuItem, bool> condition = (item) => { return item.ItemData.item == drink; };
+			PlayerInventory.Instance.RemoveFromInventoryByCondition(condition, null, null);
 		}
 	}
 }

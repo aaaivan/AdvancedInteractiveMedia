@@ -17,6 +17,7 @@ public class InputsManager : MonoBehaviour
 		Gameplay,
 		Tablet,
 		Dialog,
+		Inventory,
 
 		None
 	}
@@ -148,7 +149,7 @@ public class InputsManager : MonoBehaviour
 				EnableDialogInputs();
 				break;
 			default:
-				return;
+				break;
 		}
 	}
 	public void DisableInputsByType(InputsType inputs)
@@ -168,7 +169,7 @@ public class InputsManager : MonoBehaviour
 				DisableDialogInputs();
 				break;
 			default:
-				return;
+				break;
 		}
 
 		inputsStack.Pop();
@@ -188,7 +189,7 @@ public class InputsManager : MonoBehaviour
 				EnableDialogInputs();
 				break;
 			default:
-				return;
+				break;
 		}
 	}
 }

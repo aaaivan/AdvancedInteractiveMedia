@@ -10,7 +10,6 @@ public class PlayerInventory : MonoBehaviour
 {
 	[SerializeField]
 	int maxCapacity = 2;
-	List<PubMenuItemData> items = new List<PubMenuItemData>();
 
 	[SerializeField]
 	RectTransform inventoryOptionsUI;
@@ -18,8 +17,11 @@ public class PlayerInventory : MonoBehaviour
 	RectTransform inventoryOptionsPanel;
 	[SerializeField]
 	TMP_Text optionPrefab;
+	[SerializeField]
+	Transform player;
+	Transform inventory;
 
-	public delegate void ItemRemovedHandler(PubMenuItemData i);
+	public delegate void ItemRemovedHandler(PubMenuItem i);
 
 	static PlayerInventory instance;
 	public static PlayerInventory Instance { get { return instance; } }
@@ -35,6 +37,7 @@ public class PlayerInventory : MonoBehaviour
 		if(instance == null)
 		{
 			instance = this;
+			inventory = player.Find("Inventory");
 		}
 		else
 		{
@@ -42,33 +45,44 @@ public class PlayerInventory : MonoBehaviour
 		}
 	}
 
-	public bool AddToInventory(PubMenuItemData item)
+	public bool AddToInventory(PubMenuItem item)
 	{
-		if (items.Count >= maxCapacity)
+		if (inventory.childCount >= maxCapacity)
 			return false;
 
-		items.Add(item);
+		item.transform.SetParent(inventory, false);
 		return true;
 	}
 
-	public bool RemoveFromInventory(PubMenuItemData item)
+	bool RemoveFromInventory(PubMenuItem item, Transform newParent)
 	{
-		int index = items.FindIndex(i => i == item);
-
-		if (index == -1)
-			return false;
-
-		items.RemoveAt(index);
-		return true;
-	}
-
-	public void RemoveFromInventoryByType(bool drinkType, ItemRemovedHandler callback)
-	{
-		Func<PubMenuItemData, bool> cmp = (i) => { return (drinkType && i.type == PubMenuItemData.MenuItemType.Drink) || (!drinkType && i.type != PubMenuItemData.MenuItemType.Drink); };
-		List<PubMenuItemData> matchingItems = new List<PubMenuItemData>();
-		foreach (PubMenuItemData item in items)
+		int index = -1;
+		foreach(Transform t in inventory)
 		{
-			if (cmp(item))
+			++index;
+			if (t.GetChild(index) == item.transform)
+				break;
+		}
+
+		if (index == inventory.childCount)
+			return false;
+
+		if(newParent != null)
+			item.transform.SetParent(newParent, false);
+		else
+			Destroy(item.gameObject);
+
+		return true;
+	}
+
+	public void RemoveFromInventoryByCondition(Func<PubMenuItem, bool> condition, Transform newParent, ItemRemovedHandler callback)
+	{
+		//Func<PubMenuItemData, bool> cmp = (i) => { return (drinkType && i.type == PubMenuItemData.MenuItemType.Drink) || (!drinkType && i.type != PubMenuItemData.MenuItemType.Drink); };
+		List<PubMenuItem> matchingItems = new List<PubMenuItem>();
+		foreach (Transform t in inventory)
+		{
+			PubMenuItem item = t.GetComponent<PubMenuItem>();
+			if (item != null && condition(item))
 				matchingItems.Add(item);
 		}
 
@@ -77,30 +91,33 @@ public class PlayerInventory : MonoBehaviour
 
 		if(matchingItems.Count == 1)
 		{
-			RemoveFromInventory(matchingItems[0]);
-			callback(matchingItems[0]);
+			RemoveFromInventory(matchingItems[0], newParent);
+			if(callback!= null)
+				callback(matchingItems[0]);
+
 			return;
 		}
 
 		inventoryOptionsUI.gameObject.SetActive(true);
-		InputsManager.Instance.DisableInputsByType(InputsManager.InputsType.Gameplay);
+		InputsManager.Instance.EnableInputsByType(InputsManager.InputsType.Inventory);
 
 		foreach (Transform child in inventoryOptionsPanel.transform)
 		{
 			Destroy(child.gameObject);
 		}
-		foreach (PubMenuItemData item in matchingItems)
+		foreach (PubMenuItem item in matchingItems)
 		{
 			GameObject option = Instantiate(optionPrefab.gameObject, inventoryOptionsPanel.transform);
 			TMP_Text text = option.GetComponent<TMP_Text>();
-			text.text = item.itemName;
+			text.text = "Put down the " + item.ItemData.itemName;
 			Button button = option.GetComponent<Button>();
 			button.onClick.AddListener(() =>
 			{
-				RemoveFromInventory(item);
-				callback(item);
+				RemoveFromInventory(item, newParent);
+				if (callback != null)
+					callback(item);
 				inventoryOptionsUI.gameObject.SetActive(false);
-				InputsManager.Instance.EnableInputsByType(InputsManager.InputsType.Gameplay);
+				InputsManager.Instance.DisableInputsByType(InputsManager.InputsType.Inventory);
 			});
 		}
 	}

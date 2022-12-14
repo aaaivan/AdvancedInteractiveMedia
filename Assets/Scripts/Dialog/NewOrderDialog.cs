@@ -15,8 +15,6 @@ public class NewOrderDialog : FluentScript, InteractableObject
 	bool hasPaid = false;
 
 	bool wasDrinkGiven = false;
-	bool isDrinkCorrect = false;
-	GameObject drinkGO = null;
 
 	string totalToPay = string.Empty;
 
@@ -69,16 +67,6 @@ public class NewOrderDialog : FluentScript, InteractableObject
 			return;
 
 		wasDrinkGiven = true;
-		isDrinkCorrect = false;
-		PubMenuItem menuItem = drink.GetComponent<PubMenuItem>();
-		if (menuItem == null)
-			return;
-
-		if(menuItem.ItemData.item == orderOptions.GetDrink().item)
-		{
-			isDrinkCorrect = true;
-			drinkGO = drink;
-		}
 	}
 
 	public void DoInteraction(bool primary)
@@ -92,6 +80,32 @@ public class NewOrderDialog : FluentScript, InteractableObject
 	public void OnAnimationButtonPressed()
 	{
 		hasPaid = true;
+	}
+
+	bool IsDrinkOnMat()
+	{
+		DrinksMat mat = LevelManager.Instance.DrinksMat;
+		return mat.transform.childCount > 0;
+	}
+
+	bool IsDrinkCorrect()
+	{
+		DrinksMat mat = LevelManager.Instance.DrinksMat;
+		PubMenuItem menuItem = mat.GetComponentInChildren<PubMenuItem>();
+
+		if (menuItem == null)
+			return false;
+
+		if (menuItem.ItemData.item == orderOptions.GetDrink().item)
+			return true;
+
+		return false;
+	}
+
+	GameObject GetDrinkOnMat()
+	{
+		DrinksMat mat = LevelManager.Instance.DrinksMat;
+		return mat.transform.GetChild(0).gameObject;
 	}
 
 	public override FluentNode Create()
@@ -117,6 +131,7 @@ public class NewOrderDialog : FluentScript, InteractableObject
 			Hide() *
 			Do(() => animator.SetBool(speakingAnim, false)) *
 
+			Do(() => isReadyToPay = false) *
 			While(() => !isOrderCorrect,
 				ContinueWhen(() => isReadyToPay) *
 				Show() *
@@ -143,6 +158,8 @@ public class NewOrderDialog : FluentScript, InteractableObject
 			If(() => OnOrderPaid != null, Do(() => OnOrderPaid.Invoke())) *
 
 			If(() => orderOptions.HasDrink(),
+				Do(() => wasDrinkGiven = IsDrinkOnMat()) *
+				
 				If(() => !wasDrinkGiven,
 					Show() *
 					Do(() => DialogManager.Instance.SetSpeaker("You")) *
@@ -151,11 +168,11 @@ public class NewOrderDialog : FluentScript, InteractableObject
 					Hide()
 				) *
 
-				While(() => !isDrinkCorrect,
+				While(() => !IsDrinkCorrect(),
 					ContinueWhen(() => wasDrinkGiven) *
 					Show() *
 
-					If(() => !isDrinkCorrect,
+					If(() => !IsDrinkCorrect(),
 						Do(() => DialogManager.Instance.SetSpeaker("Customer")) *
 						Do(() => animator.SetBool(speakingAnim, true)) *
 						Write("This is the wrong drink.").WaitForButton() *
@@ -167,9 +184,9 @@ public class NewOrderDialog : FluentScript, InteractableObject
 					Do(() => animator.SetBool(speakingAnim, false))
 				)
 			) *
-			// TODO: make drink not interactable anymore
 			// TODO: add pickup gesture anymation and continue dialog at the end of gesture
-			Do(() => { drinkGO.transform.parent = transform; drinkGO.SetActive(false); }) *
+			Do(() => GetDrinkOnMat().GetComponent<PubMenuItem>().Interactable = false) *
+			Do(() => GetDrinkOnMat().transform.parent = transform.Find("Inventory")) *
 
 			Show() *
 			Do(() => DialogManager.Instance.SetSpeaker("Customer")) *
