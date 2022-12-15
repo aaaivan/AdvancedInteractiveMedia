@@ -1,51 +1,42 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using UnityEngine;
 
 public class Chair : MonoBehaviour
 {
-	Transform startPosition; // position when the chair is far from the table
-	Transform endPosition; // position when the chair is close to the table
+	[SerializeField]
+	FoodOnTableManager foodOntable;
+	public FoodOnTableManager FoodOnTable { get { return foodOntable; } }
 
-	private void Awake()
+	Transform seatedCustomer = null;
+	public Transform SeatedCustomer
+	{ 
+		get { return seatedCustomer; }
+		set { seatedCustomer = value; }
+	}
+	bool hasCustomerArrived = false;
+	public bool HasCustomerArrived
 	{
-		startPosition = transform.parent;
-		endPosition = transform.parent.Find("EndPos");
+		get { return hasCustomerArrived; }
+		set { hasCustomerArrived = value; }
 	}
 
-	public void TranslateToPosition(CustomerAI customer, float duration)
+	public void SetCustomerOnChair(Transform _customer)
 	{
-		StartCoroutine(MoveChairCoroutine(customer, duration));
-	}
-
-	IEnumerator MoveChairCoroutine(CustomerAI customer, float duration)
-	{
-		float endTime = Time.time + duration;
-		Transform target = customer.transform.Find("ChairPos");
-
-		// move the chair under the customer's butt
-		for (float t; (t = (duration + Time.time - endTime) / duration) < 1.0f; )
+		if(seatedCustomer == null && _customer != null)
 		{
-			Vector3 pos = target.position;
-			pos.y = transform.position.y;
-			transform.position = Vector3.Lerp(transform.position, pos, t * t * t * t);
-			yield return null;
+			Table t = GetComponentInParent<Table>();
+			t.CustomerCount = t.CustomerCount + 1;
+			seatedCustomer = _customer;
+			hasCustomerArrived = false;
 		}
-
-		// parent the customer to the chair
-		transform.position = new Vector3(target.position.x, transform.position.y, target.position.z);
-		customer.transform.SetParent(transform);
-
-
-		// move the chair and the customer under the table
-		endTime = Time.time + duration;
-		Vector3 pos2 = endPosition.position;
-		for (float t; (t = (duration + Time.time - endTime) / duration) < 1.0f;)
+		else if (seatedCustomer != null && _customer == null)
 		{
-			transform.position = Vector3.Lerp(transform.position, pos2, t * t * t);
-			yield return null;
+			Table t = GetComponentInParent<Table>();
+			t.CustomerCount = t.CustomerCount - 1;
+			seatedCustomer = _customer;
+			hasCustomerArrived = false;
 		}
-
-		yield return null;
 	}
 }

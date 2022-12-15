@@ -5,8 +5,9 @@ using UnityEngine;
 public class CustomerAI : MonoBehaviour
 {
 	[SerializeField]
-	Transform chair; // chair game object
-	Chair chairPivot; // pivot of the chair that will be translated to move the chair
+	Chair chair; // chair game object
+	public Chair Chair { get { return chair; } }
+	ChairTranslation chairPivot; // pivot of the chair that will be translated to move the chair
 	Transform chairStandingPos; // location where the customer should be standing before sitting on the chair
 
 	CustomerMovementController movementController;
@@ -47,8 +48,9 @@ public class CustomerAI : MonoBehaviour
 		animator= GetComponent<Animator>();
 		state = CustomerState.None;
 
-		chairPivot = chair.transform.Find("Pivot").GetComponent<Chair>();
+		chairPivot = chair.transform.Find("Pivot").GetComponent<ChairTranslation>();
 		chairStandingPos = chairPivot.transform.Find("StandingPos");
+		chair.SetCustomerOnChair(transform);
 	}
 
 	private void Start()
@@ -78,5 +80,16 @@ public class CustomerAI : MonoBehaviour
 	private void Update()
 	{
 		if(Input.GetKeyUp(KeyCode.L) && state == CustomerState.FrontOfTheQueue) { LeaveQueue(); }
+	}
+
+	public void OnAnimationSitDown()
+	{
+		Transform inventory = transform.Find("Inventory");
+		for (int i = inventory.childCount - 1; i >= 0; --i)
+		{
+			PubMenuItem item = inventory.GetChild(i).GetComponent<PubMenuItem>();
+			if(item != null)
+				chair.FoodOnTable.AddFood(item);
+		}
 	}
 }

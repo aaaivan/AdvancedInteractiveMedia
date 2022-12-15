@@ -90,4 +90,9 @@ public class CustomerOptions : MonoBehaviour
 		}
 		return null;
 	}
+
+	public bool OrderHasItem(PubMenuItemData item)
+	{
+		return order.Contains(item);
+	}
 }

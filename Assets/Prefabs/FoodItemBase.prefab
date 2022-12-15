@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 62492014446938240}
   - component: {fileID: 1161966303039472689}
   - component: {fileID: 5596708380097985827}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -90,7 +90,7 @@ GameObject:
   - component: {fileID: 930527737206854563}
   - component: {fileID: 2636474774763038836}
   - component: {fileID: 8166897493428011819}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -202,7 +202,8 @@ GameObject:
   m_Component:
   - component: {fileID: 418565016112856912}
   - component: {fileID: 6373978038869679701}
-  m_Layer: 0
+  - component: {fileID: 3076162208354992639}
+  m_Layer: 7
   m_Name: FoodItemBase
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -219,7 +220,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 6365638590227090359}
   - {fileID: 6819387999621924949}
@@ -239,6 +240,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   destTable: {fileID: 1600001682113991699}
+--- !u!65 &3076162208354992639
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2980104102552419592}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.30427384, y: 0.20161024, z: 0.30427396}
+  m_Center: {x: 0, y: 0.099548474, z: 0}
 --- !u!1 &7643085504263222650
 GameObject:
   m_ObjectHideFlags: 0
@@ -250,7 +264,7 @@ GameObject:
   - component: {fileID: 7256746116289381813}
   - component: {fileID: 8207741304448080473}
   - component: {fileID: 1600001682113991699}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: TableNumber
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -385,7 +399,6 @@ GameObject:
   - component: {fileID: 6365638590227090359}
   - component: {fileID: 6883736854149988664}
   - component: {fileID: 2018131244716272424}
-  - component: {fileID: 5735416130090003359}
   m_Layer: 0
   m_Name: Model
   m_TagString: Untagged
@@ -401,9 +414,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7980752893977333460}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.1, z: 0}
-  m_LocalScale: {x: 0.3, y: 0.2, z: 0.3}
-  m_ConstrainProportionsScale: 0
+  m_LocalPosition: {x: 0, y: 0.035, z: 0}
+  m_LocalScale: {x: 0.1, y: 0.06666666, z: 0.1}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 418565016112856912}
   m_RootOrder: -1
@@ -458,16 +471,3 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &5735416130090003359
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7980752893977333460}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
