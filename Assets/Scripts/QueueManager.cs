@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.InputSystem.XR;
+using UnityEngine.UIElements;
 
 public class QueueManager : MonoBehaviour
 {
@@ -30,12 +31,20 @@ public class QueueManager : MonoBehaviour
 
 	private void OnEnable()
 	{
-		CustomerMovementController.OnDestinationReached += OnQueueLocationReached;
+		foreach (CustomerAI c in queuingCustomers)
+		{
+			c.GetComponent<CustomerMovementController>().OnDestinationReached += OnQueueLocationReached;
+			c.GetComponent<CustomerMovementController>().OnFacingForward += OnFacingForward;
+		}
 	}
 
 	private void OnDisable()
 	{
-		CustomerMovementController.OnDestinationReached -= OnQueueLocationReached;
+		foreach (CustomerAI c in queuingCustomers)
+		{
+			c.GetComponent<CustomerMovementController>().OnDestinationReached -= OnQueueLocationReached;
+			c.GetComponent<CustomerMovementController>().OnFacingForward -= OnFacingForward;
+		}
 	}
 
 	private void OnDestroy()
@@ -66,6 +75,8 @@ public class QueueManager : MonoBehaviour
 		{
 			// register this customer as moving to the queue and set their destination
 			queuingCustomers.Add(customer);
+			customer.GetComponent<CustomerMovementController>().OnDestinationReached += OnQueueLocationReached;
+			customer.GetComponent<CustomerMovementController>().OnFacingForward += OnFacingForward;
 			customer.State = CustomerAI.CustomerState.MovingToQueue;
 			Transform nextPosition = NextPositionGet();
 			customer.MovementController.SetDestination(nextPosition.position, nextPosition.forward);
@@ -80,23 +91,11 @@ public class QueueManager : MonoBehaviour
 			return;
 
 		CustomerAI customer = queuingCustomers[position];
-		// set the correct state for the customer
-		if (customer.State == CustomerAI.CustomerState.MovingToQueue)
-		{
-			if (queueLength == 0)
-				customer.State = CustomerAI.CustomerState.FrontOfTheQueue;
-			else
-				customer.State = CustomerAI.CustomerState.Queuing;
-		}
-		else if (customer.State == CustomerAI.CustomerState.Queuing && position == 0)
-		{
-			customer.State = CustomerAI.CustomerState.FrontOfTheQueue;
+
+		if (customer.State != CustomerAI.CustomerState.MovingToQueue)
 			return;
-		}
-		else
-		{
-			return;
-		}
+
+		customer.State = CustomerAI.CustomerState.Queuing;
 
 		// do a swap so that the customer who's just arrived is at the queueLength-th position
 		CustomerAI temp = queuingCustomers[queueLength];
@@ -117,14 +116,31 @@ public class QueueManager : MonoBehaviour
 		}
 	}
 
+	void OnFacingForward(CustomerMovementController controller)
+	{
+		int position = queuingCustomers.FindIndex(x => x.MovementController == controller);
+		if (position == -1)
+			return;
+
+		CustomerAI customer = queuingCustomers[position];
+		
+		if (customer.State == CustomerAI.CustomerState.Queuing && position == 0)
+		{
+			customer.State = CustomerAI.CustomerState.FrontOfTheQueue;
+		}
+	}
+
 	public void RemoveFromQueue(CustomerAI customer, Transform nextDestination, CustomerAI.CustomerState newState = CustomerAI.CustomerState.None)
 	{
-		int position = queuingCustomers.FindIndex(x => x);
+		int position = queuingCustomers.FindIndex(x => x == customer);
 		if (position == -1)
 			return;
 
 		// remove customer from the queue
 		queuingCustomers.RemoveAt(position);
+		customer.GetComponent<CustomerMovementController>().OnDestinationReached -= OnQueueLocationReached;
+		customer.GetComponent<CustomerMovementController>().OnFacingForward -= OnFacingForward;
+
 		--queueLength;
 
 		// set the new state

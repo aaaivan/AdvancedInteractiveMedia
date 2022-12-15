@@ -9,34 +9,36 @@ public class Chair : MonoBehaviour
 	FoodOnTableManager foodOntable;
 	public FoodOnTableManager FoodOnTable { get { return foodOntable; } }
 
+	public delegate void SitDownHandler(CustomerAI c);
+	public event SitDownHandler OnSitDown;
+
 	Transform seatedCustomer = null;
 	public Transform SeatedCustomer
 	{ 
 		get { return seatedCustomer; }
-		set { seatedCustomer = value; }
 	}
-	bool hasCustomerArrived = false;
+	bool isCustomerSitting = false;
 	public bool HasCustomerArrived
 	{
-		get { return hasCustomerArrived; }
-		set { hasCustomerArrived = value; }
+		get { return isCustomerSitting; }
 	}
 
-	public void SetCustomerOnChair(Transform _customer)
+	public void SetCustomer(Transform _customer)
 	{
 		if(seatedCustomer == null && _customer != null)
 		{
-			Table t = GetComponentInParent<Table>();
-			t.CustomerCount = t.CustomerCount + 1;
+			isCustomerSitting = false;
 			seatedCustomer = _customer;
-			hasCustomerArrived = false;
 		}
-		else if (seatedCustomer != null && _customer == null)
-		{
-			Table t = GetComponentInParent<Table>();
-			t.CustomerCount = t.CustomerCount - 1;
-			seatedCustomer = _customer;
-			hasCustomerArrived = false;
-		}
+	}
+
+	public void SetIsCustomerSitting(bool sitting)
+	{
+		if (isCustomerSitting == sitting)
+			return;
+
+		isCustomerSitting = sitting;
+		if (isCustomerSitting && OnSitDown != null)
+			OnSitDown.Invoke(seatedCustomer.GetComponent<CustomerAI>());
 	}
 }

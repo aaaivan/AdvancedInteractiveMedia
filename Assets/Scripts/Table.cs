@@ -8,11 +8,20 @@ public class Table : MonoBehaviour, InteractableObject
 	[SerializeField]
 	List<Chair> chairs = new List<Chair>();
 
-	int customerCount = 0;
-	public int CustomerCount
+	private void OnEnable()
 	{
-		get { return customerCount; }
-		set { customerCount = value; SetAnimatorParameters(); }
+		foreach (Chair c in chairs)
+		{
+			c.OnSitDown += SetAnimatorParameters;
+		}
+	}
+
+	private void OnDisable()
+	{
+		foreach (Chair c in chairs)
+		{
+			c.OnSitDown -= SetAnimatorParameters;
+		}
 	}
 
 	public void DoInteraction(bool primary)
@@ -58,7 +67,7 @@ public class Table : MonoBehaviour, InteractableObject
 		}
 	}
 
-	void SetAnimatorParameters()
+	public void SetAnimatorParameters(CustomerAI customer)
 	{
 		List<Transform> customers = new List<Transform>();
 
@@ -68,11 +77,17 @@ public class Table : MonoBehaviour, InteractableObject
 				customers.Add(c.SeatedCustomer);
 		}
 
+		StartCoroutine(AnimationDelayCoroutine(customers));
+	}
+
+	IEnumerator AnimationDelayCoroutine(List<Transform> customers)
+	{
 		foreach (Transform c in customers)
 		{
 			Animator anim = c.GetComponent<Animator>();
-			anim.SetBool("IsTalking", customerCount > 1);
+			anim.SetBool("IsTalking", customers.Count > 1);
+			yield return new WaitForSeconds(UnityEngine.Random.Range(2.0f, 4.0f));
 		}
-
+		yield return null;
 	}
 }

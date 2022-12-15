@@ -34,12 +34,12 @@ public class CustomerAI : MonoBehaviour
 
 	private void OnEnable()
 	{
-		CustomerMovementController.OnDestinationReached += OnTableReached;
+		GetComponent<CustomerMovementController>().OnFacingForward += OnTableReached;
 	}
 
 	private void OnDisable()
 	{
-		CustomerMovementController.OnDestinationReached -= OnTableReached;
+		GetComponent<CustomerMovementController>().OnFacingForward -= OnTableReached;
 	}
 
 	private void Awake()
@@ -50,7 +50,7 @@ public class CustomerAI : MonoBehaviour
 
 		chairPivot = chair.transform.Find("Pivot").GetComponent<ChairTranslation>();
 		chairStandingPos = chairPivot.transform.Find("StandingPos");
-		chair.SetCustomerOnChair(transform);
+		chair.SetCustomer(transform);
 	}
 
 	private void Start()

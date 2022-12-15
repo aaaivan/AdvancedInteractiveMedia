@@ -31,7 +31,8 @@ public class CustomerMovementController : MonoBehaviour
 	bool isRotating = false;
 
 	public delegate void DestinationReachedHandler(CustomerMovementController c);
-	public static event DestinationReachedHandler OnDestinationReached;
+	public event DestinationReachedHandler OnDestinationReached;
+	public event DestinationReachedHandler OnFacingForward;
 
 	void Awake()
     {
@@ -137,6 +138,8 @@ public class CustomerMovementController : MonoBehaviour
 					agent.ResetPath();
 					agent.updateRotation = false;
 					isMoving = false;
+					if (OnDestinationReached != null)
+						OnDestinationReached.Invoke(this);
 				}
 			}
 			yield return null;
@@ -182,8 +185,8 @@ public class CustomerMovementController : MonoBehaviour
 			yield return null;
 		}
 
-		if (OnDestinationReached != null)
-			OnDestinationReached.Invoke(this);
+		if (OnFacingForward != null)
+			OnFacingForward.Invoke(this);
 
 		// set animator parameters
 		animator.SetBool("IsRotating", false);

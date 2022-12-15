@@ -47,7 +47,7 @@ public class ChairTranslation : MonoBehaviour
 		}
 
 		// notify the chair that the customer is sitting on it
-		transform.parent.GetComponent<Chair>().HasCustomerArrived = true;
+		transform.parent.GetComponent<Chair>().SetIsCustomerSitting(true);
 
 		yield return null;
 	}
