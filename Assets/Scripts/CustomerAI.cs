@@ -1,13 +1,12 @@
+using Newtonsoft.Json.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class CustomerAI : MonoBehaviour
 {
-	[SerializeField]
 	Chair chair; // chair game object
-	public Chair Chair { get { return chair; } }
-	ChairTranslation chairPivot; // pivot of the chair that will be translated to move the chair
+	public Chair Chair{ get { return chair; } }
 	Transform chairStandingPos; // location where the customer should be standing before sitting on the chair
 
 	CustomerMovementController movementController;
@@ -47,10 +46,6 @@ public class CustomerAI : MonoBehaviour
 		movementController = GetComponent<CustomerMovementController>();
 		animator= GetComponent<Animator>();
 		state = CustomerState.None;
-
-		chairPivot = chair.transform.Find("Pivot").GetComponent<ChairTranslation>();
-		chairStandingPos = chairPivot.transform.Find("StandingPos");
-		chair.SetCustomer(transform);
 	}
 
 	private void Start()
@@ -74,7 +69,7 @@ public class CustomerAI : MonoBehaviour
 			return;
 
 		animator.SetTrigger("DoSitDown");
-		chairPivot.TranslateToPosition(this, 4f);
+		chair.TranslateToPosition(this, 5f);
 	}
 
 	private void Update()
@@ -91,5 +86,15 @@ public class CustomerAI : MonoBehaviour
 			if(item != null)
 				chair.FoodOnTable.AddFood(item);
 		}
+	}
+
+	public void SetChair(Chair c)
+	{
+		if (chair != null)
+			return;
+
+		chair = c;
+		chair.SetCustomer(transform);
+		chairStandingPos = chair.transform.Find("Pivot/StandingPos");
 	}
 }

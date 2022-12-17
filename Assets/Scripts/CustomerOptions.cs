@@ -4,10 +4,13 @@ using UnityEngine;
 
 public class CustomerOptions : MonoBehaviour
 {
-	int tableNumber = 1;
-	public int TableNumber {
-		get { return tableNumber; }
-		set { tableNumber = value; }
+	public int TableNumber
+	{
+		get
+		{
+			CustomerAI c = GetComponent<CustomerAI>();
+			return c.Chair.Table.TableNumber;
+		}
 	}
 
 	List<PubMenuItemData> order = new List<PubMenuItemData>();
@@ -35,7 +38,7 @@ public class CustomerOptions : MonoBehaviour
 
 	public bool IsOrderMatching(List<PubMenuItemData> _items, int _tableNum)
 	{
-		if (_tableNum != tableNumber)
+		if (_tableNum != TableNumber)
 			return false;
 		if(_items.Count != order.Count)
 			return false;
