@@ -40,7 +40,13 @@ public class CustomerOptions : MonoBehaviour
 	{
 		if (_tableNum != TableNumber)
 			return false;
-		if(_items.Count != order.Count)
+
+		return IsOrderMatching(_items);
+	}
+
+	public bool IsOrderMatching(List<PubMenuItemData> _items)
+	{
+		if (_items.Count != order.Count)
 			return false;
 
 		order.Sort((a, b) => (a.item.CompareTo(b.item)));

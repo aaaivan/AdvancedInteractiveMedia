@@ -6,6 +6,11 @@ using UnityEngine;
 public class LevelManager : MonoBehaviour
 {
 	[SerializeField]
+	float spawnTimeInterval = 60;
+	int nextCustomer = 0;
+	float lastSpawnTime;
+
+	[SerializeField]
 	DrinksMat drinksMat;
 	[SerializeField]
 	Transform entrance;
@@ -15,9 +20,7 @@ public class LevelManager : MonoBehaviour
 	List<Table> tables;
 	[SerializeField]
 	List<GameObject> customerPrefabs;
-	int nextCustomer = 0;
-	float lastSpawnTime = -30;
-	const float spawnTimeInterval = 30;
+
 	public DrinksMat DrinksMat { get { return drinksMat; } }
 
 	static LevelManager instance;
@@ -43,6 +46,8 @@ public class LevelManager : MonoBehaviour
 				customerPrefabs[i] = customerPrefabs[j];
 				customerPrefabs[j] = temp;
 			}
+
+			lastSpawnTime = float.MinValue;
 		}
 		else
 		{
@@ -63,8 +68,8 @@ public class LevelManager : MonoBehaviour
 			{
 				if (t.IsEmpty() && t.GetNumberOfFreeChairs() >= numCustomers)
 				{
-					table = t;
-					break;
+					if (table == null || t.GetSize() < table.GetSize())
+						table = t;
 				}
 			}
 			if (table == null)
@@ -73,8 +78,8 @@ public class LevelManager : MonoBehaviour
 				{
 					if (t.GetNumberOfFreeChairs() >= numCustomers)
 					{
-						table = t;
-						break;
+						if(table == null || t.GetNumberOfFreeChairs() < table.GetNumberOfFreeChairs())
+							table = t;
 					}
 				}
 			}

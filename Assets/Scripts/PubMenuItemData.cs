@@ -37,5 +37,6 @@ public class PubMenuItemData
 	public string itemName;
 	public float price;
 	public float prepTime;
+	public float timeToEat;
 	public GameObject prefab;
 }

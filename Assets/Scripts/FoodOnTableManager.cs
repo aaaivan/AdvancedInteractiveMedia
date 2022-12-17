@@ -11,6 +11,7 @@ public class FoodOnTableManager : MonoBehaviour
 	{
 		return locations[(int)type].childCount == 0;
 	}
+
 	public void AddFood(PubMenuItem item)
 	{
 		item.transform.SetParent(locations[(int)item.ItemData.type], false);
@@ -18,5 +19,18 @@ public class FoodOnTableManager : MonoBehaviour
 		item.transform.localRotation = Quaternion.identity;
 		item.Interactable = false;
 		item.HideTableUI();
+		item.ShowProgressUI();
+	}
+
+	public List<PubMenuItem> GetFoods()
+	{
+		List<PubMenuItem> result = new List<PubMenuItem>();
+		for (int i = 0; i < locations.Length; i++)
+		{
+			if (locations[i].childCount != 0)
+				result.Add(locations[i].GetChild(0).GetComponent<PubMenuItem>());
+		}
+
+		return result;
 	}
 }

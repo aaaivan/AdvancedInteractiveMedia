@@ -7,7 +7,12 @@ public class PubMenuItem : MonoBehaviour, InteractableObject
 {
 	[SerializeField]
 	TMP_Text destTable;
-	Canvas tableUI;
+	GameObject tableUI;
+
+	[SerializeField]
+	Transform progressBar;
+	GameObject progressUI;
+
 
 	bool interactable = true;
 	public bool Interactable 
@@ -19,6 +24,12 @@ public class PubMenuItem : MonoBehaviour, InteractableObject
 	PubMenuItemData itemData;
 	public PubMenuItemData ItemData { get { return itemData; } }
 
+	float consumptionProgression = 1.0f;
+	public float ConsumptionProgression
+	{
+		get { return consumptionProgression; }
+		set { consumptionProgression = value; }
+	}
 
 	static public GameObject InstatiateItem(PubMenuItemData item, Transform parent)
 	{
@@ -44,18 +55,35 @@ public class PubMenuItem : MonoBehaviour, InteractableObject
 
 	private void Awake()
 	{
-		tableUI = GetComponentInChildren<Canvas>(true);
-		tableUI.gameObject.SetActive(false);
+		tableUI = transform.Find("TableNumber").gameObject;
+		tableUI.SetActive(false);
+		progressUI = transform.Find("ProgressBar").gameObject;
+		progressUI.SetActive(false);
 	}
 
 	public void ShowTableUI(int tableNum)
 	{
 		destTable.text = tableNum.ToString();
-		tableUI.gameObject.SetActive(true);
+		tableUI.SetActive(true);
 	}
 
 	public void HideTableUI()
 	{
-		tableUI.gameObject.SetActive(false);
+		tableUI.SetActive(false);
+	}
+
+	public void ShowProgressUI()
+	{
+		progressUI.SetActive(true);
+	}
+
+	public void HideProgressUI()
+	{
+		progressUI.SetActive(false);
+	}
+
+	private void Update()
+	{
+		progressBar.transform.localScale = new Vector3(consumptionProgression, progressBar.transform.localScale.y, progressBar.transform.localScale.z);
 	}
 }

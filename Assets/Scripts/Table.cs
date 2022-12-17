@@ -43,6 +43,11 @@ public class Table : MonoBehaviour, InteractableObject
 		PlayerInventory.Instance.RemoveFromInventoryByCondition(condition, transform, OnFoodPutDownOnTable);
 	}
 
+	public int GetSize()
+	{
+		return chairs.Count;
+	}
+
 	public bool IsEmpty()
 	{
 		return GetNumberOfFreeChairs() == chairs.Count;
@@ -72,23 +77,22 @@ public class Table : MonoBehaviour, InteractableObject
 
 	void OnFoodPutDownOnTable(PubMenuItem food)
 	{
-		List<CustomerOptions> customers = new List<CustomerOptions>();
+		List<MealConsumption> meals = new List<MealConsumption>();
 
 		// find the customers that are sitting on a char at this table
 		foreach (Chair c in chairs)
 		{
 			if (c.HasCustomerArrived && c.SeatedCustomer != null)
-				customers.Add(c.SeatedCustomer.GetComponent<CustomerOptions>());
+				meals.Add(c.SeatedCustomer.GetComponent<MealConsumption>());
 		}
 
 		bool found = false;
-		foreach(CustomerOptions c in customers)
+		foreach(MealConsumption m in meals)
 		{
-			FoodOnTableManager f = c.GetComponent<CustomerAI>().Chair.FoodOnTable;
-			// check whether customer c has order the food item we are putting on the table
-			// and whether they have an item of that type already.
-			if (c.OrderHasItem(food.ItemData) && f.IsSpotFreeForItemType(food.ItemData.type))
+			// check whether customer which has the meal m is waiting for this food
+			if (m.IsWaitingForFood(food.ItemData))
 			{
+				FoodOnTableManager f = m.GetComponent<CustomerAI>().Chair.FoodOnTable;
 				f.AddFood(food);
 				found = true;
 				break;
