@@ -16,6 +16,7 @@ public class LevelManager : MonoBehaviour
 	Transform entrance;
 	[SerializeField]
 	Transform exit;
+	public Transform Exit { get { return exit; } }
 	[SerializeField]
 	List<Table> tables;
 	[SerializeField]

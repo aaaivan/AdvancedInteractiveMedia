@@ -16,6 +16,7 @@ public class Table : MonoBehaviour, InteractableObject
 		foreach (Chair c in chairs)
 		{
 			c.OnSitDown += SetTalkingAnimation;
+			c.OnStandUp += SetTalkingAnimation;
 		}
 	}
 
@@ -24,6 +25,40 @@ public class Table : MonoBehaviour, InteractableObject
 		foreach (Chair c in chairs)
 		{
 			c.OnSitDown -= SetTalkingAnimation;
+			c.OnStandUp -= SetTalkingAnimation;
+		}
+	}
+
+	private void Update()
+	{
+		List<MealConsumption> meals = new List<MealConsumption>();
+
+		// find the customers that are sitting on a char at this table
+		foreach (Chair c in chairs)
+		{
+			if (c.HasCustomerArrived && c.SeatedCustomer != null)
+				meals.Add(c.SeatedCustomer.GetComponent<MealConsumption>());
+		}
+
+		bool freeTable = true;
+		foreach (MealConsumption m in meals)
+		{
+			// check whether all customers have finished their meal
+			if (!m.HasFinishedEating)
+			{
+				freeTable = false;
+				break;
+			}
+		}
+
+		if(freeTable)
+		{
+			// make all customers at this table leave
+			foreach (MealConsumption m in meals)
+			{
+				CustomerAI c = m.GetComponent<CustomerAI>();
+				c.LeaveRestaurant();
+			}
 		}
 	}
 

@@ -9,6 +9,7 @@ public class MealConsumption : MonoBehaviour
 	FoodOnTableManager foodOnTable;
 	List<PubMenuItemData> consumedFood = new List<PubMenuItemData>();
 	bool hasFinishedEating = false;
+	public bool HasFinishedEating { get { return hasFinishedEating; } }
 
 	private void Awake()
 	{
@@ -28,7 +29,7 @@ public class MealConsumption : MonoBehaviour
 
 	private void Update()
 	{
-		if (!customer.Chair.HasCustomerArrived)
+		if (customer.Chair == null || !customer.Chair.HasCustomerArrived)
 			return;
 
 		List<PubMenuItem> items = foodOnTable.GetFoods();
