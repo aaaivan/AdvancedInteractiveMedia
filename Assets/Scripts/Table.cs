@@ -1,7 +1,9 @@
+using Fluent;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class Table : MonoBehaviour, InteractableObject
 {
@@ -10,6 +12,8 @@ public class Table : MonoBehaviour, InteractableObject
 	[SerializeField]
 	int tableNumber = 0;
 	public int TableNumber { get { return tableNumber; } }
+
+	WrongOrderDialog wrongOrderDialog;
 
 	private void OnEnable()
 	{
@@ -27,6 +31,11 @@ public class Table : MonoBehaviour, InteractableObject
 			c.OnSitDown -= SetTalkingAnimation;
 			c.OnStandUp -= SetTalkingAnimation;
 		}
+	}
+
+	private void Awake()
+	{
+		wrongOrderDialog = GetComponent<WrongOrderDialog>();
 	}
 
 	private void Update()
@@ -73,6 +82,9 @@ public class Table : MonoBehaviour, InteractableObject
 				customers.Add(c.SeatedCustomer.GetComponent<CustomerOptions>());
 		}
 
+		if (customers.Count == 0)
+			return;
+
 		// leave on the table a food (i.e., non drink)
 		Func<PubMenuItem, bool> condition = (item) => { return item.ItemData.type != PubMenuItemData.MenuItemType.Drink; };
 		PlayerInventory.Instance.RemoveFromInventoryByCondition(condition, transform, OnFoodPutDownOnTable);
@@ -98,6 +110,11 @@ public class Table : MonoBehaviour, InteractableObject
 		}
 
 		return result;
+	}
+
+	public int GetNumberOfCustomers()
+	{
+		return GetSize() - GetNumberOfFreeChairs();
 	}
 
 	public Chair GetFreeChair()
@@ -137,8 +154,17 @@ public class Table : MonoBehaviour, InteractableObject
 		// no matching order for this food item was found
 		if(!found)
 		{
-			Debug.Log("Wrong Order!");
 			PlayerInventory.Instance.AddToInventory(food);
+
+			List<Transform> customers = new List<Transform>();
+			foreach (MealConsumption m in meals)
+			{
+				customers.Add(m.transform);
+			}
+			Action<Animator> fn = (anim) => anim.SetTrigger("DoDisapproval");
+			StartCoroutine(AnimationDelayCoroutine(customers, fn, 0.2f, 0.5f));
+			wrongOrderDialog.SetWrongFood(food.ItemData);
+			//FluentManager.Instance.ExecuteAction(wrongOrderDialog);
 		}
 	}
 
@@ -155,17 +181,18 @@ public class Table : MonoBehaviour, InteractableObject
 				customers.Add(c.SeatedCustomer);
 		}
 
-		StartCoroutine(AnimationDelayCoroutine(customers));
+		Action<Animator> fn = (anim) => anim.SetBool("IsTalking", customers.Count > 1);
+		StartCoroutine(AnimationDelayCoroutine(customers, fn, 2f, 4f));
 	}
 
-	IEnumerator AnimationDelayCoroutine(List<Transform> customers)
+	IEnumerator AnimationDelayCoroutine(List<Transform> customers, Action<Animator> animFunction , float minDelay, float maxDelay)
 	{
 		// play the talk animation if at least 2 customers are sitting at the table
 		foreach (Transform c in customers)
 		{
 			Animator anim = c.GetComponent<Animator>();
-			anim.SetBool("IsTalking", customers.Count > 1);
-			yield return new WaitForSeconds(UnityEngine.Random.Range(2.0f, 4.0f));
+			animFunction(anim);
+			yield return new WaitForSeconds(UnityEngine.Random.Range(minDelay, maxDelay));
 		}
 		yield return null;
 	}
