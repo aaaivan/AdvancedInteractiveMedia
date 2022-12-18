@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using UnityEditorInternal;
 using UnityEngine;
 using static UnityEditor.PlayerSettings;
 
@@ -13,10 +14,10 @@ public class Chair : MonoBehaviour
 	Table table;
 	public Table Table { get { return table; } }
 
-	Transform startPosition; // position when the chair is far from the table
-	Transform endPosition; // position when the chair is close to the table
-	Transform pivot;
+	Vector3 farPosition; // position when the chair is far from the table
+	Vector3 closePosition; // position when the chair is close to the table
 	Vector3 halfwayPosition = Vector3.zero;
+	Transform pivot;
 
 	public delegate void SitDownHandler(CustomerAI c);
 	public event SitDownHandler OnSitDown;
@@ -35,8 +36,8 @@ public class Chair : MonoBehaviour
 
 	private void Awake()
 	{
-		startPosition = transform;
-		endPosition = transform.Find("EndPos");
+		farPosition = transform.position;
+		closePosition = transform.Find("EndPos").position;
 		pivot = transform.Find("Pivot");
 		table = transform.parent.GetComponent<Table>();
 	}
@@ -78,13 +79,16 @@ public class Chair : MonoBehaviour
 		if(anim != null)
 			anim.SetBool("IsSitting", true);
 
-		Vector3 startPos = pivot.position;
-		float endTime = Time.time + duration;
-		Transform target = customer.transform.Find("ChairPos");
-
 		// move the chair under the customer's butt
-		for (float t; (t = (duration + Time.time - endTime) / duration) < 1.0f;)
+		Vector3 startPos = pivot.position;
+		Transform target = customer.transform.Find("ChairPos");
+		float endTime = Time.time + duration;
+		while (true)
 		{
+			float t = (duration + Time.time - endTime) / duration;
+			if (t > 1.0f)
+				break;
+
 			Vector3 pos = target.position;
 			pos.y = pivot.position.y;
 			pivot.position = Vector3.Lerp(startPos, pos, t);
@@ -108,13 +112,16 @@ public class Chair : MonoBehaviour
 		duration = 1f;
 		startPos = pivot.position;
 		endTime = Time.time + duration;
-		Vector3 pos2 = endPosition.position;
-		for (float t; (t = (duration + Time.time - endTime) / duration) < 1.0f;)
+		while (true)
 		{
-			pivot.position = Vector3.Lerp(startPos, pos2, t);
-			if ((pivot.position - pos2).sqrMagnitude < 0.0001f)
+			float t = (duration + Time.time - endTime) / duration;
+			if (t > 1.0f)
+				break;
+
+			pivot.position = Vector3.Lerp(startPos, closePosition, t);
+			if ((pivot.position - closePosition).sqrMagnitude < 0.0001f)
 			{
-				pivot.position = pos2;
+				pivot.position = closePosition;
 				break;
 			}
 			yield return null;
@@ -131,11 +138,15 @@ public class Chair : MonoBehaviour
 	IEnumerator MoveChairOffTheTableCoroutine(CustomerAI customer, float duration)
 	{
 		// move the chair and the customer off the table
-		Vector3 startPosition = pivot.position;
+		Vector3 initPos = pivot.position;
 		float endTime = Time.time + duration;
-		for (float t; (t = (duration + Time.time - endTime) / duration) < 1.0f;)
+		while(true)
 		{
-			pivot.position = Vector3.Lerp(startPosition, halfwayPosition,t);
+			float t = (duration + Time.time - endTime) / duration;
+			if (t > 1.0f)
+				break;
+
+			pivot.position = Vector3.Lerp(initPos, halfwayPosition,t);
 			if ((pivot.position - halfwayPosition).sqrMagnitude < 0.0001f)
 			{
 				pivot.position = halfwayPosition;
@@ -151,25 +162,29 @@ public class Chair : MonoBehaviour
 		Animator anim = customer.GetComponent<Animator>();
 		if (anim != null)
 			anim.SetBool("IsSitting", false);
+		yield return new WaitForSeconds(2.5f);
+
+		// notify the chair that the customer is sitting on it
+		SetIsCustomerSitting(false);
 
 		// move the chair off the customer's butt
-		startPosition = pivot.position;
+		duration = 1f;
+		initPos = pivot.position;
 		endTime = Time.time + duration;
-		for (float t; (t = (duration + Time.time - endTime) / duration) < 1.0f;)
+		while (true)
 		{
-			Vector3 pos = transform.position;
-			pos.y = pivot.position.y;
-			pivot.position = Vector3.Lerp(startPosition, pos, Mathf.Sqrt(t));
-			if ((pivot.position - pos).sqrMagnitude < 0.0001f)
+			float t = (duration + Time.time - endTime) / duration;
+			if (t > 1.0f)
+				break;
+
+			pivot.position = Vector3.Lerp(initPos, farPosition, t);
+			if ((pivot.position - farPosition).sqrMagnitude < 0.0001f)
 			{
-				pivot.position = pos;
+				pivot.position = farPosition;
 				break;
 			}
 			yield return null;
 		}
-
-		// notify the chair that the customer is sitting on it
-		SetIsCustomerSitting(false);
 		
 		yield return null;
 	}
