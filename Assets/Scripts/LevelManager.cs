@@ -13,6 +13,8 @@ public class LevelManager : MonoBehaviour
 	[SerializeField]
 	DrinksMat drinksMat;
 	[SerializeField]
+	ExitTabletView exitTablet;
+	[SerializeField]
 	Transform entrance;
 	[SerializeField]
 	Transform exit;
@@ -23,6 +25,7 @@ public class LevelManager : MonoBehaviour
 	List<GameObject> customerPrefabs;
 
 	public DrinksMat DrinksMat { get { return drinksMat; } }
+	public ExitTabletView ExitTablet { get { return exitTablet; } }
 
 	static LevelManager instance;
 	public static LevelManager Instance { get { return instance; } }
@@ -61,7 +64,7 @@ public class LevelManager : MonoBehaviour
 		if (Time.time > lastSpawnTime + spawnTimeInterval)
 		{
 			lastSpawnTime = Time.time;
-			int numCustomers = UnityEngine.Random.Range(1, 3);
+			int numCustomers = UnityEngine.Random.Range(2, 3);
 			numCustomers = Math.Min(numCustomers, customerPrefabs.Count - nextCustomer);
 
 			Table table = null;

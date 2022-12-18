@@ -17,9 +17,10 @@ namespace Fluent
     {
         public TextMeshProUGUI TextUI;
         public float CharacterPauseSeconds = 0.03f;
-        public Button Button;
+		public Button Button;
+		public Button CompleteTextButton;
 
-        bool isTyping = false;
+		bool isTyping = false;
         WriteNode currentNode;
         TextMeshProUGUI currentTextUI;
 
@@ -28,8 +29,18 @@ namespace Fluent
 		{
 			if (TextUI == null)
 			{
-				GameObject gameObject = DialogManager.Instance.DialogWritePanel.gameObject;
-				TextUI = gameObject.GetComponent<TextMeshProUGUI>();
+				GameObject go = DialogManager.Instance.DialogWritePanel.gameObject;
+				TextUI = go.GetComponent<TextMeshProUGUI>();
+			}
+			if (Button == null)
+			{
+				GameObject go = DialogManager.Instance.SkipButton.gameObject;
+				Button = go.GetComponent<Button>();
+			}
+			if(CompleteTextButton == null)
+			{
+				GameObject go = DialogManager.Instance.CompleteTextButton.gameObject;
+				CompleteTextButton = go.GetComponent<Button>();
 			}
 		}
 #endif
@@ -49,6 +60,7 @@ namespace Fluent
 			{
 				currentPosition = allText.Length;
 				textTextUI.maxVisibleCharacters = currentPosition;
+				RemoveSkipListener();
 			}
 			else
 #endif
@@ -63,9 +75,7 @@ namespace Fluent
                     textTextUI.maxVisibleCharacters = currentPosition;
                     if (currentPosition >= allText.Length)
                     {
-#if !IVAN_OVERRIDE //07-12-2022 prevent text from disappearing after it's been written. Remove it on next click!
 						RemoveSkipListener();
-#endif
 						break;
                     }
                 }
@@ -78,16 +88,6 @@ namespace Fluent
             isTyping = false;
 
             bool buttonRequestedButNotSpecified = currentNode.WaitForButtonPress && (Button == null);
-#if IVAN_OVERRIDE //07-12-2022 prevent text from disappearing after it's been written. Remove it on next click!
-			if (!currentNode.WaitForButtonPress)
-			{
-				StartCoroutine("Pause");
-			}
-			else if (!buttonRequestedButNotSpecified)
-			{
-				ShowButton();
-			}
-#else
 			if (buttonRequestedButNotSpecified)
             {
                 Debug.Log("You are trying to show a button for a Write() but you did not specify the Button UI element", gameObject);
@@ -100,16 +100,17 @@ namespace Fluent
             {
                 ShowButton();
             }
-#endif
-
 		}
 
-#if !IVAN_OVERRIDE //07-12-2022 prevent text from disappearing after it's been written. Remove it on next click!
 		private void RemoveSkipListener()
         {
-            currentTextUI.GetComponentInChildren<Button>().onClick.RemoveAllListeners();
-        }
+#if IVAN_OVERRIDE //18-12-2022
+			CompleteTextButton.onClick.RemoveAllListeners();
+#else
+			currentTextUI.GetComponentInChildren<Button>().onClick.RemoveAllListeners();
 #endif
+		}
+
 		private void ShowButton()
         {
             // Show the button
@@ -139,9 +140,6 @@ namespace Fluent
             currentNode.Done();
         }
 
-#if IVAN_OVERRIDE
-		public
-#endif
 		void StopTyping()
         {
             // When we stop for the first time we just write out all the text
@@ -150,27 +148,18 @@ namespace Fluent
                 isTyping = false;
                 StopCoroutine("TypeText");
                 currentTextUI.GetComponent<TextMeshProUGUI>().maxVisibleCharacters = currentTextUI.text.Length;
-#if !IVAN_OVERRIDE //07-12-2022 prevent text from disappearing after it's been written. Remove it on next click!
 				RemoveSkipListener();
-#endif
 
 				if (!currentNode.WaitForButtonPress)
                     StartCoroutine("Pause");
                 else
-#if IVAN_OVERRIDE //07-12-2022 prevent text from disappearing after it's been written. Remove it on next click!
-				if (Button != null)
-#endif
 					ShowButton();
 
                 return;
             }
 
             // The player needs to press a button to continue
-            if (currentNode.WaitForButtonPress
-#if IVAN_OVERRIDE //07-12-2022 prevent text from disappearing after it's been written. Remove it on next click!
-				&& Button != null
-#endif
-			   )
+            if (currentNode.WaitForButtonPress)
                 return;
 
             // If the node is stopped again we stop the pausing
@@ -199,7 +188,32 @@ namespace Fluent
                 return;
             }
 
-#if !IVAN_OVERRIDE //07-12-2022 prevent text from disappearing after it's been written. Remove it on next click!
+#if IVAN_OVERRIDE //18-12-2022
+			// Add the button listener so that text can be skipped
+			CompleteTextButton.onClick.RemoveAllListeners();
+			CompleteTextButton.onClick.AddListener(new UnityEngine.Events.UnityAction(() =>
+			{
+				// Do cleanup
+				isTyping = false;
+				StopCoroutine("TypeText");
+				StopCoroutine("Pause");
+				string nodeText = textTextUI.text;
+				textTextUI.text = nodeText;
+				textTextUI.maxVisibleCharacters = nodeText.Length;
+				RemoveSkipListener();
+
+				// Write's that require a button press to continue cannot be interrupted
+				if (currentNode.WaitForButtonPress)
+				{
+					ShowButton();
+					return;
+				}
+
+				FluentNode prevNode = currentNode;
+				currentNode.Done();
+				prevNode.IWasInterrupted();
+			}));
+#else
 			// Add a button to the text if it doesnt have one
 			if (currentTextUI.GetComponentInChildren<Button>() == null)
                 currentTextUI.gameObject.AddComponent<Button>();

@@ -17,6 +17,12 @@ public class DialogManager : MonoBehaviour
 	[SerializeField]
 	RectTransform dialogSpeakerField;
 	public RectTransform DialogSpeakerField { get { return dialogSpeakerField; } }
+	[SerializeField]
+	RectTransform skipButton;
+	public RectTransform SkipButton { get { return skipButton; } }
+	[SerializeField]
+	RectTransform completeTextButton;
+	public RectTransform CompleteTextButton { get { return completeTextButton; } }
 
 	static DialogManager instance;
 	public static DialogManager Instance { get { return instance; } }

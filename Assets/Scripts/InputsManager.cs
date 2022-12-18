@@ -9,8 +9,6 @@ public class InputsManager : MonoBehaviour
 	FirstPersonController firstPersonController;
 	TabletViewControls tabletControls;
 	public TabletViewControls TabletControls { get { return tabletControls; } }
-	UIControls dialogControls;
-	public UIControls DialogControls { get { return dialogControls; } }
 
 	public enum InputsType
 	{
@@ -47,11 +45,9 @@ public class InputsManager : MonoBehaviour
 			instance = this;
 			firstPersonController = GameObject.FindGameObjectWithTag("Player").GetComponent<FirstPersonController>();
 			tabletControls = new TabletViewControls();
-			dialogControls = new UIControls();
 
 			inputsStack.Clear();
 			tabletControls.Disable();
-			dialogControls.Disable();
 			EnableInputsByType(InputsType.Gameplay);
 		}
 		else if (instance != null)
@@ -103,15 +99,6 @@ public class InputsManager : MonoBehaviour
 		tabletControls.Disable();
 	}
 
-	void EnableDialogInputs()
-	{
-		dialogControls.Enable();
-	}
-	void DisableDialogInputs()
-	{
-		dialogControls.Disable();
-	}
-
 	public void EnableInputsByType(InputsType inputs)
 	{
 		InputsType disableInputs = InputsType.None;
@@ -128,9 +115,6 @@ public class InputsManager : MonoBehaviour
 			case InputsType.Tablet:
 				DisableTabletInputs();
 				break;
-			case InputsType.Dialog:
-				DisableDialogInputs();
-				break;
 			default:
 				break;
 		}
@@ -144,9 +128,6 @@ public class InputsManager : MonoBehaviour
 				break;
 			case InputsType.Tablet:
 				EnableTabletInputs();
-				break;
-			case InputsType.Dialog:
-				EnableDialogInputs();
 				break;
 			default:
 				break;
@@ -165,9 +146,6 @@ public class InputsManager : MonoBehaviour
 			case InputsType.Tablet:
 				DisableTabletInputs();
 				break;
-			case InputsType.Dialog:
-				DisableDialogInputs();
-				break;
 			default:
 				break;
 		}
@@ -184,9 +162,6 @@ public class InputsManager : MonoBehaviour
 				break;
 			case InputsType.Tablet:
 				EnableTabletInputs();
-				break;
-			case InputsType.Dialog:
-				EnableDialogInputs();
 				break;
 			default:
 				break;

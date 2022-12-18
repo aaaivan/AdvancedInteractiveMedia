@@ -161,7 +161,7 @@ public class NewOrderDialog : FluentScript, InteractableObject
 			) *
 
 			Do(() => animator.SetTrigger(paymentAnim)) *
-			Do(() => GameObject.Find("Tablet").GetComponentInChildren<ExitTabletView>().DoInteraction(true)) *
+			Do(() => LevelManager.Instance.ExitTablet.DoInteraction(true)) *
 			ContinueWhen(() => hasPaid) *
 			If(() => OnOrderPaid != null, Do(() => OnOrderPaid.Invoke())) *
 

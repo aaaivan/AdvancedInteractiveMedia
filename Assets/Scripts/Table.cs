@@ -114,7 +114,13 @@ public class Table : MonoBehaviour, InteractableObject
 
 	public int GetNumberOfCustomers()
 	{
-		return GetSize() - GetNumberOfFreeChairs();
+		int result = 0;
+		foreach (Chair c in chairs)
+		{
+			if (c.HasCustomerArrived && c.SeatedCustomer != null)
+				result++;
+		}
+		return result;
 	}
 
 	public Chair GetFreeChair()
@@ -164,7 +170,7 @@ public class Table : MonoBehaviour, InteractableObject
 			Action<Animator> fn = (anim) => anim.SetTrigger("DoDisapproval");
 			StartCoroutine(AnimationDelayCoroutine(customers, fn, 0.2f, 0.5f));
 			wrongOrderDialog.SetWrongFood(food.ItemData);
-			//FluentManager.Instance.ExecuteAction(wrongOrderDialog);
+			FluentManager.Instance.ExecuteAction(wrongOrderDialog);
 		}
 	}
 
