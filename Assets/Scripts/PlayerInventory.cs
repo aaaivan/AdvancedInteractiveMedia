@@ -77,7 +77,6 @@ public class PlayerInventory : MonoBehaviour
 
 	public void RemoveFromInventoryByCondition(Func<PubMenuItem, bool> condition, Transform newParent, ItemRemovedHandler callback)
 	{
-		//Func<PubMenuItemData, bool> cmp = (i) => { return (drinkType && i.type == PubMenuItemData.MenuItemType.Drink) || (!drinkType && i.type != PubMenuItemData.MenuItemType.Drink); };
 		List<PubMenuItem> matchingItems = new List<PubMenuItem>();
 		foreach (Transform t in inventory)
 		{
@@ -113,11 +112,11 @@ public class PlayerInventory : MonoBehaviour
 			Button button = option.GetComponent<Button>();
 			button.onClick.AddListener(() =>
 			{
+				InputsManager.Instance.DisableInputsByType(InputsManager.InputsType.Inventory);
 				RemoveFromInventory(item, newParent);
 				if (callback != null)
 					callback(item);
 				inventoryOptionsUI.gameObject.SetActive(false);
-				InputsManager.Instance.DisableInputsByType(InputsManager.InputsType.Inventory);
 			});
 		}
 	}
