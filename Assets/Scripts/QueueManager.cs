@@ -96,6 +96,8 @@ public class QueueManager : MonoBehaviour
 			return;
 
 		customer.State = CustomerAI.CustomerState.Queuing;
+		customer.StartQueuingTime = Time.time;
+
 
 		// do a swap so that the customer who's just arrived is at the queueLength-th position
 		CustomerAI temp = queuingCustomers[queueLength];

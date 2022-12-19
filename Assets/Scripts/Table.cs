@@ -166,6 +166,7 @@ public class Table : MonoBehaviour, InteractableObject
 			foreach (MealConsumption m in meals)
 			{
 				customers.Add(m.transform);
+				m.GetComponent<TipCalculator>().mistakes++;
 			}
 			Action<Animator> fn = (anim) => anim.SetTrigger("DoDisapproval");
 			StartCoroutine(AnimationDelayCoroutine(customers, fn, 0.2f, 0.5f));

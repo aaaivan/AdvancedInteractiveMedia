@@ -12,8 +12,10 @@ public class LevelManager : MonoBehaviour
 
 	[SerializeField]
 	DrinksMat drinksMat;
+	public DrinksMat DrinksMat { get { return drinksMat; } }
 	[SerializeField]
 	ExitTabletView exitTablet;
+	public ExitTabletView ExitTablet { get { return exitTablet; } }
 	[SerializeField]
 	Transform entrance;
 	[SerializeField]
@@ -24,8 +26,7 @@ public class LevelManager : MonoBehaviour
 	[SerializeField]
 	List<GameObject> customerPrefabs;
 
-	public DrinksMat DrinksMat { get { return drinksMat; } }
-	public ExitTabletView ExitTablet { get { return exitTablet; } }
+	float score = 0f;
 
 	static LevelManager instance;
 	public static LevelManager Instance { get { return instance; } }
@@ -64,7 +65,7 @@ public class LevelManager : MonoBehaviour
 		if (Time.time > lastSpawnTime + spawnTimeInterval)
 		{
 			lastSpawnTime = Time.time;
-			int numCustomers = UnityEngine.Random.Range(2, 3);
+			int numCustomers = UnityEngine.Random.Range(1, 3);
 			numCustomers = Math.Min(numCustomers, customerPrefabs.Count - nextCustomer);
 
 			Table table = null;
@@ -107,5 +108,11 @@ public class LevelManager : MonoBehaviour
 			yield return new WaitForSeconds(2.0f);
 		}
 		yield return null;
+	}
+
+	public void AddScore(float amount)
+	{
+		score += amount;
+		Debug.Log(score.ToString());
 	}
 }

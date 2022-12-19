@@ -34,6 +34,13 @@ public class CustomerOptions : MonoBehaviour
 		}
 
 		order.Sort((a, b) => (a.item.CompareTo(b.item)));
+
+		float cost = 0;
+		foreach(PubMenuItemData item in order)
+		{
+			cost += item.price;
+		}
+		GetComponent<TipCalculator>().SetBaseTip(cost * 0.2f);
 	}
 
 	public bool IsOrderMatching(List<PubMenuItemData> _items, int _tableNum)
@@ -103,5 +110,10 @@ public class CustomerOptions : MonoBehaviour
 	public bool OrderHasItem(PubMenuItemData item)
 	{
 		return order.Contains(item);
+	}
+
+	public int GetItemsCount()
+	{
+		return order.Count; 
 	}
 }

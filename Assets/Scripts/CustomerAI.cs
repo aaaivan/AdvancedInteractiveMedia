@@ -13,6 +13,16 @@ public class CustomerAI : MonoBehaviour
 
 	public CustomerMovementController MovementController { get { return movementController; } }
 
+	float startQueuingTime = 0;
+	public float StartQueuingTime
+	{
+		get { return startQueuingTime; }
+		set { startQueuingTime = value; }
+	}
+	float sitAtTableTime = 0;
+	public float SitAtTableTime { get { return sitAtTableTime; } }
+
+
 	public enum CustomerState
 	{
 		None,
@@ -39,7 +49,7 @@ public class CustomerAI : MonoBehaviour
 	private void OnDisable()
 	{
 		movementController.OnFacingForward -= OnTableReached;
-		movementController.OnDestinationReached += OnExitReached;
+		movementController.OnDestinationReached -= OnExitReached;
 	}
 
 	private void Awake()
@@ -51,12 +61,6 @@ public class CustomerAI : MonoBehaviour
 	private void Start()
 	{
 		QueueUp();
-	}
-
-	private void Update()
-	{
-		if (Input.GetKeyUp(KeyCode.L) && state == CustomerState.FrontOfTheQueue) { LeaveQueue(); }
-
 	}
 
 	public void SetChair(Chair c)
@@ -91,26 +95,32 @@ public class CustomerAI : MonoBehaviour
 			return;
 
 		QueueManager.Instance.RemoveFromQueue(this, chairStandingPos, CustomerState.MovingToTable);
+		GetComponent<TipCalculator>().queuingTime = Time.time - startQueuingTime;
 	}
 
 	public void LeaveRestaurant()
 	{
 		if (state == CustomerState.AtTheTable)
 		{
+			state = CustomerState.MovingToExit;
+
 			chair.MoveChairOffTheTable(this, 1f);
+			TipCalculator tip = GetComponent<TipCalculator>();
+			LevelManager.Instance.AddScore(tip.CalculateTip());
 		}
-		else
+		else if (state != CustomerState.MovingToExit)
 		{
 			UnsetChair();
 			movementController.SetDestination(LevelManager.Instance.Exit.position, LevelManager.Instance.Exit.forward);
 		}
 	}
 
-	private void OnTableReached(CustomerMovementController controller)
+	void OnTableReached(CustomerMovementController controller)
 	{
 		if (state != CustomerState.MovingToTable)
 			return;
 
+		sitAtTableTime = Time.time;
 		state = CustomerState.AtTheTable;
 		chair.MoveChairCloseToTable(this, 2.5f);
 	}
@@ -128,10 +138,6 @@ public class CustomerAI : MonoBehaviour
 
 	public void OnLeftChair(CustomerAI customer)
 	{
-		if (state != CustomerState.AtTheTable)
-			return;
-
-		state = CustomerState.MovingToExit;
 		UnsetChair();
 		movementController.SetDestination(LevelManager.Instance.Exit.position, LevelManager.Instance.Exit.forward);
 	}

@@ -9,6 +9,7 @@ public class MealConsumption : MonoBehaviour
 	FoodOnTableManager foodOnTable;
 	List<PubMenuItemData> consumedFood = new List<PubMenuItemData>();
 	bool hasFinishedEating = false;
+	bool isOrderComplete = false;
 	public bool HasFinishedEating { get { return hasFinishedEating; } }
 
 	private void Awake()
@@ -33,6 +34,11 @@ public class MealConsumption : MonoBehaviour
 			return;
 
 		List<PubMenuItem> items = foodOnTable.GetFoods();
+		if(!isOrderComplete && items.Count + consumedFood.Count == order.GetItemsCount())
+		{
+			isOrderComplete = true;
+			GetComponent<TipCalculator>().foodWaitTime = Time.time - customer.SitAtTableTime;
+		}
 		foreach (PubMenuItem item in items)
 		{
 			float deltaProgress = Time.deltaTime / (item.ItemData.timeToEat * items.Count);
