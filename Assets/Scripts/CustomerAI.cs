@@ -10,8 +10,9 @@ public class CustomerAI : MonoBehaviour
 	Transform chairStandingPos; // location where the customer should be standing before sitting on the chair
 
 	CustomerMovementController movementController;
-
 	public CustomerMovementController MovementController { get { return movementController; } }
+
+	Animator animator;
 
 	float startQueuingTime = 0;
 	public float StartQueuingTime
@@ -56,11 +57,21 @@ public class CustomerAI : MonoBehaviour
 	{
 		movementController = GetComponent<CustomerMovementController>();
 		state = CustomerState.None;
+		animator = GetComponent<Animator>();
 	}
 
 	private void Start()
 	{
 		QueueUp();
+	}
+	private void Update()
+	{
+		if(animator.GetBool("IsTalking") && animator.GetBool("IsSitting"))
+		{
+			int prob = (int)(30/Time.deltaTime);
+			if (Random.Range(0, prob) == 0)
+				animator.SetTrigger("DoLaugh");
+		}
 	}
 
 	public void SetChair(Chair c)
