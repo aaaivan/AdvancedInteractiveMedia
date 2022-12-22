@@ -5,8 +5,15 @@ using UnityEngine;
 
 public class DrinksMat : MonoBehaviour, InteractableObject
 {
+	Transform drinkHolder;
+
 	public delegate void DrinkOnMatHandler(GameObject drink);
 	public static event DrinkOnMatHandler OnDrinkPutOnMat;
+
+	private void Awake()
+	{
+		drinkHolder = transform.Find("Inventory");
+	}
 
 	public GameObject CurrentDrink
 	{
@@ -20,11 +27,11 @@ public class DrinksMat : MonoBehaviour, InteractableObject
 
 	public void DoInteraction(bool primary)
 	{
-		if (transform.childCount > 0)
+		if (drinkHolder.childCount > 0)
 			return;
 
 		Func<PubMenuItem, bool> condition = (item) => { return item.ItemData.type == PubMenuItemData.MenuItemType.Drink; };
-		PlayerInventory.Instance.RemoveFromInventoryByCondition(condition, transform, AddDrinkToMat);
+		PlayerInventory.Instance.RemoveFromInventoryByCondition(condition, drinkHolder, AddDrinkToMat);
 	}
 
 	void AddDrinkToMat(PubMenuItem drink)
