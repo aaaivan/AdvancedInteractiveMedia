@@ -1,13 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
-using UnityEditorInternal;
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
 
 public class Chair : MonoBehaviour
 {
-	[SerializeField]
 	FoodOnTableManager foodOntable;
 	public FoodOnTableManager FoodOnTable { get { return foodOntable; } }
 
@@ -39,7 +36,8 @@ public class Chair : MonoBehaviour
 		farPosition = transform.position;
 		closePosition = transform.Find("EndPos").position;
 		pivot = transform.Find("Pivot");
-		table = transform.parent.GetComponent<Table>();
+		table = transform.parent.parent.GetComponent<Table>();
+		foodOntable = transform.parent.Find("FoodLocation").GetComponent<FoodOnTableManager>();
 	}
 
 	public void SetCustomer(Transform _customer)

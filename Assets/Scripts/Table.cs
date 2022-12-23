@@ -3,14 +3,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 public class Table : MonoBehaviour, InteractableObject
 {
 	[SerializeField]
+	List<Transform> seats = new List<Transform>();
 	List<Chair> chairs = new List<Chair>();
-	[SerializeField]
 	int tableNumber = 0;
+	static int nextTableNumber = 1;
 	public int TableNumber { get { return tableNumber; } }
 
 	WrongOrderDialog wrongOrderDialog;
@@ -36,6 +36,12 @@ public class Table : MonoBehaviour, InteractableObject
 	private void Awake()
 	{
 		wrongOrderDialog = GetComponent<WrongOrderDialog>();
+		tableNumber = nextTableNumber++;
+		foreach(Transform t in seats)
+		{
+			Chair c = t.Find("Chair").GetComponent<Chair>();
+			chairs.Add(c);
+		}
 	}
 
 	private void Update()
