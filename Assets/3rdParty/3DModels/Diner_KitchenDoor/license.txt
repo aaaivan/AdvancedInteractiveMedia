@@ -1,0 +1,11 @@
+Model Information:
+* title:	Warehouse doors
+* source:	https://sketchfab.com/3d-models/warehouse-doors-c35bcce819c64079b26bd2f4d1c11096
+* author:	tboiston (https://sketchfab.com/tboiston)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Warehouse doors" (https://sketchfab.com/3d-models/warehouse-doors-c35bcce819c64079b26bd2f4d1c11096) by tboiston (https://sketchfab.com/tboiston) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

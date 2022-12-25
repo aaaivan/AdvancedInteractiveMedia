@@ -1,0 +1,11 @@
+Model Information:
+* title:	Letras Neon
+* source:	https://sketchfab.com/3d-models/letras-neon-d72f04926e334bb79e4ffa43fae59ead
+* author:	yimmyramiro (https://sketchfab.com/yimmyramiro)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Letras Neon" (https://sketchfab.com/3d-models/letras-neon-d72f04926e334bb79e4ffa43fae59ead) by yimmyramiro (https://sketchfab.com/yimmyramiro) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

@@ -1,0 +1,11 @@
+Model Information:
+* title:	Arcade Cabinet “Elben Quest”
+* source:	https://sketchfab.com/3d-models/arcade-cabinet-elben-quest-637f3a217d3e4fbbbeef8670381f2c53
+* author:	iceboxX708 (https://sketchfab.com/iceboxX708)
+
+Model License:
+* license type:	CC-BY-NC-4.0 (http://creativecommons.org/licenses/by-nc/4.0/)
+* requirements:	Author must be credited. No commercial use.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Arcade Cabinet “Elben Quest”" (https://sketchfab.com/3d-models/arcade-cabinet-elben-quest-637f3a217d3e4fbbbeef8670381f2c53) by iceboxX708 (https://sketchfab.com/iceboxX708) licensed under CC-BY-NC-4.0 (http://creativecommons.org/licenses/by-nc/4.0/)

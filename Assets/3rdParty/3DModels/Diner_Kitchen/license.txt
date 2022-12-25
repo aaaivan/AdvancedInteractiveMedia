@@ -1,0 +1,11 @@
+Model Information:
+* title:	Industial kitchen
+* source:	https://sketchfab.com/3d-models/industial-kitchen-66aa81d93e674dfbb56b6bca549e88b1
+* author:	I am Cassia (https://sketchfab.com/iamCassia)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Industial kitchen" (https://sketchfab.com/3d-models/industial-kitchen-66aa81d93e674dfbb56b6bca549e88b1) by I am Cassia (https://sketchfab.com/iamCassia) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

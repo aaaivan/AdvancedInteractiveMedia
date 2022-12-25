@@ -1,0 +1,11 @@
+Model Information:
+* title:	Arcade Cabinet Heart Catch
+* source:	https://sketchfab.com/3d-models/arcade-cabinet-heart-catch-e2177689272b48089a22a455b820944a
+* author:	Al (https://sketchfab.com/lightningocelot)
+
+Model License:
+* license type:	CC-BY-SA-4.0 (http://creativecommons.org/licenses/by-sa/4.0/)
+* requirements:	Author must be credited. Modified versions must have the same license. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Arcade Cabinet Heart Catch" (https://sketchfab.com/3d-models/arcade-cabinet-heart-catch-e2177689272b48089a22a455b820944a) by Al (https://sketchfab.com/lightningocelot) licensed under CC-BY-SA-4.0 (http://creativecommons.org/licenses/by-sa/4.0/)

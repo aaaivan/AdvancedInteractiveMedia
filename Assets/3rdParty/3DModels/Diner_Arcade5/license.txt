@@ -1,0 +1,11 @@
+Model Information:
+* title:	Stealth Fishing Arcade Cabinet
+* source:	https://sketchfab.com/3d-models/stealth-fishing-arcade-cabinet-128422bf27c24e8b81d3c5c5a896e229
+* author:	williambaldwin (https://sketchfab.com/williambaldwin)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Stealth Fishing Arcade Cabinet" (https://sketchfab.com/3d-models/stealth-fishing-arcade-cabinet-128422bf27c24e8b81d3c5c5a896e229) by williambaldwin (https://sketchfab.com/williambaldwin) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

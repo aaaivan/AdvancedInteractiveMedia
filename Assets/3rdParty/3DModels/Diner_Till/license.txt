@@ -1,0 +1,11 @@
+Model Information:
+* title:	Shop Casher, payment machine
+* source:	https://sketchfab.com/3d-models/shop-casher-payment-machine-8b6d3d3ee76342a4b987e7d27053bea7
+* author:	ChillLitoStudio (https://sketchfab.com/ChillLitoStudio)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Shop Casher, payment machine" (https://sketchfab.com/3d-models/shop-casher-payment-machine-8b6d3d3ee76342a4b987e7d27053bea7) by ChillLitoStudio (https://sketchfab.com/ChillLitoStudio) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
