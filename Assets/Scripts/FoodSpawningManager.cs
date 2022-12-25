@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class FoodSpawningManager : MonoBehaviour
 {
-	[SerializeField]
 	List<Transform> spawnLocations = new List<Transform>();
 
 	static FoodSpawningManager instance;
@@ -26,6 +25,10 @@ public class FoodSpawningManager : MonoBehaviour
 		if (instance == null)
 		{
 			instance = this;
+			foreach(Transform t in transform)
+			{
+				spawnLocations.Add(t);
+			}
 		}
 		else
 		{
