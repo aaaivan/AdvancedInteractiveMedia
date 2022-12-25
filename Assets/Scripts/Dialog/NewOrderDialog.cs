@@ -83,18 +83,22 @@ public class NewOrderDialog : FluentScript, InteractableObject
 	bool IsDrinkOnMat()
 	{
 		DrinksMat mat = LevelManager.Instance.DrinksMat;
-		return mat.transform.childCount > 0;
+		return mat.CurrentDrink != null;
 	}
 
 	bool IsDrinkCorrect()
 	{
 		DrinksMat mat = LevelManager.Instance.DrinksMat;
-		PubMenuItem menuItem = mat.GetComponentInChildren<PubMenuItem>();
-
-		if (menuItem == null)
+		GameObject itemGameObject = mat.CurrentDrink;
+		
+		if (itemGameObject == null)
 			return false;
 
-		if (menuItem.ItemData.item == orderOptions.GetDrink().item)
+		PubMenuItem drink = itemGameObject.GetComponent<PubMenuItem>();
+		if (drink == null)
+			return false;
+
+		if (drink.ItemData.item == orderOptions.GetDrink().item)
 			return true;
 
 		return false;
@@ -103,7 +107,7 @@ public class NewOrderDialog : FluentScript, InteractableObject
 	GameObject GetDrinkOnMat()
 	{
 		DrinksMat mat = LevelManager.Instance.DrinksMat;
-		return mat.transform.GetChild(0).gameObject;
+		return mat.CurrentDrink;
 	}
 
 	public void OnAnimationButtonPressed()

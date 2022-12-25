@@ -19,8 +19,8 @@ public class DrinksMat : MonoBehaviour, InteractableObject
 	{
 		get
 		{ 
-			return transform.childCount > 0 ? 
-				transform.GetChild(0).gameObject :
+			return drinkHolder.childCount > 0 ?
+				drinkHolder.GetChild(0).gameObject :
 				null;
 		}
 	}

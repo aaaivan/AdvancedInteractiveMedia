@@ -821,6 +821,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Chair
       objectReference: {fileID: 0}
+    - target: {fileID: 8291667900950304385, guid: 5c6c1763cfda0cf4ab4a474b5a4d5f5e,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 5c6c1763cfda0cf4ab4a474b5a4d5f5e, type: 3}
@@ -902,6 +907,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Chair
+      objectReference: {fileID: 0}
+    - target: {fileID: 8291667900950304385, guid: 5c6c1763cfda0cf4ab4a474b5a4d5f5e,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
