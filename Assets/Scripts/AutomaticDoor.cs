@@ -15,7 +15,6 @@ public class AutomaticDoor : MonoBehaviour
 	{
 		counter++;
 		doorAnimator.SetBool("Open", true);
-		Debug.Log(counter);
 	}
 
 	private void OnTriggerExit(Collider other)
