@@ -1,9 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEditor.Progress;
 
 public class PlayerInventory : MonoBehaviour
 {
@@ -19,6 +21,12 @@ public class PlayerInventory : MonoBehaviour
 	[SerializeField]
 	Transform player;
 	Transform inventory;
+
+	[SerializeField]
+	RectTransform inventoryUI;
+	[SerializeField]
+	GameObject inventoryUiElementPrefab = null;
+
 
 	public delegate void ItemRemovedHandler(PubMenuItem i);
 
@@ -50,6 +58,8 @@ public class PlayerInventory : MonoBehaviour
 			return false;
 
 		item.transform.SetParent(inventory, false);
+
+		RebuildUI();
 		return true;
 	}
 
@@ -71,6 +81,7 @@ public class PlayerInventory : MonoBehaviour
 		else
 			Destroy(item.gameObject);
 
+		RebuildUI();
 		return true;
 	}
 
@@ -117,6 +128,25 @@ public class PlayerInventory : MonoBehaviour
 					callback(item);
 				inventoryOptionsUI.gameObject.SetActive(false);
 			});
+		}
+	}
+
+	void RebuildUI()
+	{
+		foreach(Transform t in inventoryUI.transform)
+		{
+			Destroy(t.gameObject);
+		}
+
+		foreach (Transform t in inventory)
+		{
+			PubMenuItem item = t.GetComponent<PubMenuItem>();
+			if (item != null)
+			{
+				GameObject go = Instantiate(inventoryUiElementPrefab, inventoryUI.transform);
+				Image image = go.GetComponent<Image>();
+				image.sprite = item.ItemData.image;
+			}
 		}
 	}
 

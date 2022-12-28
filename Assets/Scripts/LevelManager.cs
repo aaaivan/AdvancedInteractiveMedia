@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class LevelManager : MonoBehaviour
@@ -26,6 +27,13 @@ public class LevelManager : MonoBehaviour
 	[SerializeField]
 	List<GameObject> customerPrefabs;
 
+	[SerializeField]
+	Transform farFarAway;
+	public Transform FarFarAway { get { return farFarAway; } }
+
+	[SerializeField]
+	TMP_Text scoreText;
+	string scoreString = "Tip: £{0}";
 	float score = 0f;
 
 	static LevelManager instance;
@@ -53,6 +61,8 @@ public class LevelManager : MonoBehaviour
 			}
 
 			lastSpawnTime = float.MinValue;
+
+			AddScore(0f);
 		}
 		else
 		{
@@ -113,6 +123,6 @@ public class LevelManager : MonoBehaviour
 	public void AddScore(float amount)
 	{
 		score += amount;
-		Debug.Log(score.ToString());
+		scoreText.text = string.Format(scoreString, score.ToString("0.00"));
 	}
 }
