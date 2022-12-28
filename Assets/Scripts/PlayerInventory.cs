@@ -108,7 +108,7 @@ public class PlayerInventory : MonoBehaviour
 		}
 
 		inventoryOptionsUI.gameObject.SetActive(true);
-		InputsManager.Instance.EnableInputsByType(InputsManager.InputsType.Inventory);
+		InputsManager.Instance.EnableInputsByType(InputsManager.InputsType.UserInterface);
 
 		foreach (Transform child in inventoryOptionsPanel.transform)
 		{
@@ -122,7 +122,7 @@ public class PlayerInventory : MonoBehaviour
 			Button button = option.GetComponent<Button>();
 			button.onClick.AddListener(() =>
 			{
-				InputsManager.Instance.DisableInputsByType(InputsManager.InputsType.Inventory);
+				InputsManager.Instance.DisableInputsByType(InputsManager.InputsType.UserInterface);
 				RemoveFromInventory(item, newParent);
 				if (callback != null)
 					callback(item);

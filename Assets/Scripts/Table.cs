@@ -2,10 +2,14 @@ using Fluent;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class Table : MonoBehaviour, InteractableObject
 {
+	[SerializeField]
+	TMP_Text tableNumText;
+
 	[SerializeField]
 	List<Transform> seats = new List<Transform>();
 	List<Chair> chairs = new List<Chair>();
@@ -37,6 +41,7 @@ public class Table : MonoBehaviour, InteractableObject
 	{
 		wrongOrderDialog = GetComponent<WrongOrderDialog>();
 		tableNumber = nextTableNumber++;
+		tableNumText.text = tableNumber.ToString();
 		foreach(Transform t in seats)
 		{
 			Chair c = t.Find("Chair").GetComponent<Chair>();

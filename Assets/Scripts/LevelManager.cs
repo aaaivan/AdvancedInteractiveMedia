@@ -32,9 +32,15 @@ public class LevelManager : MonoBehaviour
 	public Transform FarFarAway { get { return farFarAway; } }
 
 	[SerializeField]
+	Canvas HudCanvas;
+	[SerializeField]
+	Canvas EndGameCanvas;
+	[SerializeField]
 	TMP_Text scoreText;
 	string scoreString = "Tip: £{0}";
 	float score = 0f;
+	public float Score { get { return score; } }
+	int customersLeft = 0;
 
 	static LevelManager instance;
 	public static LevelManager Instance { get { return instance; } }
@@ -61,8 +67,8 @@ public class LevelManager : MonoBehaviour
 			}
 
 			lastSpawnTime = float.MinValue;
-
-			AddScore(0f);
+			customersLeft = customerPrefabs.Count;
+			scoreText.text = string.Format(scoreString, score.ToString("0.00"));
 		}
 		else
 		{
@@ -124,5 +130,12 @@ public class LevelManager : MonoBehaviour
 	{
 		score += amount;
 		scoreText.text = string.Format(scoreString, score.ToString("0.00"));
+
+		--customersLeft;
+		if(customersLeft == 0)
+		{
+			HudCanvas.gameObject.SetActive(false);
+			EndGameCanvas.gameObject.SetActive(true);
+		}
 	}
 }

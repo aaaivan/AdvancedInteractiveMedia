@@ -15,7 +15,7 @@ public class InputsManager : MonoBehaviour
 		Gameplay,
 		Tablet,
 		Dialog,
-		Inventory,
+		UserInterface,
 
 		None
 	}
