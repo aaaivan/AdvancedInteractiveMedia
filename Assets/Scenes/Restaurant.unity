@@ -116079,10 +116079,20 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7690740970327157561, guid: aac5810ecd6d9974483d07703097f385,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.175
+      objectReference: {fileID: 0}
     - target: {fileID: 8066569371150539309, guid: aac5810ecd6d9974483d07703097f385,
         type: 3}
       propertyPath: m_Name
       value: AutomaticDoor
+      objectReference: {fileID: 0}
+    - target: {fileID: 8240318855664320572, guid: aac5810ecd6d9974483d07703097f385,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1.015
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
