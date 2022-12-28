@@ -1,0 +1,11 @@
+Model Information:
+* title:	3D Coke Can
+* source:	https://sketchfab.com/3d-models/3d-coke-can-0f73afaea7404e2c84b5ab711a21d858
+* author:	JsiyahGraham (https://sketchfab.com/JsiyahGraham)
+
+Model License:
+* license type:	CC-BY-NC-ND-4.0 (http://creativecommons.org/licenses/by-nc-nd/4.0/)
+* requirements:	Author must be credited. No commercial use. Modified versions can not be distributed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "3D Coke Can" (https://sketchfab.com/3d-models/3d-coke-can-0f73afaea7404e2c84b5ab711a21d858) by JsiyahGraham (https://sketchfab.com/JsiyahGraham) licensed under CC-BY-NC-ND-4.0 (http://creativecommons.org/licenses/by-nc-nd/4.0/)

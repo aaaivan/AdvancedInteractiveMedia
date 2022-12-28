@@ -8,13 +8,14 @@ public class PubMenuItemData
 	public enum MenuItemEnum
 	{
 		Burger,
+		Wrap,
 		HotDog,
 		Pizza,
 		Steak,
 
 		Salad,
 		FrenchFries,
-		Nachos,
+		OnionRings,
 
 		Water,
 		Coke,

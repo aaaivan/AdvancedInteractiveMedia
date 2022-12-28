@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1607492820084615006
+--- !u!1 &1696044621000857119
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,46 +8,46 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2091120067978870244}
-  - component: {fileID: 3074547915639566913}
-  - component: {fileID: 958715057020978827}
+  - component: {fileID: 6978935114049245328}
+  - component: {fileID: 4956626643464816643}
+  - component: {fileID: 1070371578993707868}
   m_Layer: 0
-  m_Name: Pizza Margarita
+  m_Name: pizza_pizza_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &2091120067978870244
+--- !u!4 &6978935114049245328
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1607492820084615006}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_GameObject: {fileID: 1696044621000857119}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
-  m_ConstrainProportionsScale: 1
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 9148034359409785771}
+  m_Father: {fileID: 8483099777049251519}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &3074547915639566913
+--- !u!33 &4956626643464816643
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1607492820084615006}
-  m_Mesh: {fileID: 6736576422581320840, guid: bf6eb03b43ee2084584c5ad373b1da04, type: 3}
---- !u!23 &958715057020978827
+  m_GameObject: {fileID: 1696044621000857119}
+  m_Mesh: {fileID: 4300000, guid: 79f0f0c60f79350488bedf1b68e61b75, type: 2}
+--- !u!23 &1070371578993707868
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1607492820084615006}
+  m_GameObject: {fileID: 1696044621000857119}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -61,7 +61,154 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 30c5e465dc21c534bada8d020bae91f4, type: 2}
+  - {fileID: 2100000, guid: d031d578a52d97b459fa9ccecdd033e8, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &6539514337282817921
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8483099777049251519}
+  m_Layer: 0
+  m_Name: pizza
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8483099777049251519
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6539514337282817921}
+  m_LocalRotation: {x: 0.70710677, y: -0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 6978935114049245328}
+  m_Father: {fileID: 2792444383555750846}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6994489641326280466
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2792444383555750846}
+  m_Layer: 0
+  m_Name: Pizza
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2792444383555750846
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6994489641326280466}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.0239, y: 0.0184, z: -0.0137}
+  m_LocalScale: {x: 0.007000001, y: 0.007000001, z: 0.007000001}
+  m_ConstrainProportionsScale: 1
+  m_Children:
+  - {fileID: 8483099777049251519}
+  m_Father: {fileID: 9148034359409785771}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &9222945716738099649
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6147017581532993487}
+  - component: {fileID: 273222055517655866}
+  - component: {fileID: 3080062319963916907}
+  m_Layer: 0
+  m_Name: Plate
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6147017581532993487
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9222945716738099649}
+  m_LocalRotation: {x: 0.70710677, y: -0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.006, y: 0.006, z: 0.006}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 9148034359409785771}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!33 &273222055517655866
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9222945716738099649}
+  m_Mesh: {fileID: 4300000, guid: de758c9e1c1bf0e42b83ef9ceccf8143, type: 2}
+--- !u!23 &3080062319963916907
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9222945716738099649}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: c5d372a59a631bb4686a549fe82cced7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -156,6 +303,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: Pizza
       objectReference: {fileID: 0}
+    - target: {fileID: 3076162208354992639, guid: 14a7696a46fea2e458ee9c5bad3872e0,
+        type: 3}
+      propertyPath: m_Size.y
+      value: 0.054936215
+      objectReference: {fileID: 0}
+    - target: {fileID: 3076162208354992639, guid: 14a7696a46fea2e458ee9c5bad3872e0,
+        type: 3}
+      propertyPath: m_Center.x
+      value: 0.000605464
+      objectReference: {fileID: 0}
+    - target: {fileID: 3076162208354992639, guid: 14a7696a46fea2e458ee9c5bad3872e0,
+        type: 3}
+      propertyPath: m_Center.y
+      value: 0.027468108
+      objectReference: {fileID: 0}
     - target: {fileID: 7980752893977333460, guid: 14a7696a46fea2e458ee9c5bad3872e0,
         type: 3}
       propertyPath: m_IsActive
@@ -166,7 +328,11 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 418565016112856912, guid: 14a7696a46fea2e458ee9c5bad3872e0,
         type: 3}
       insertIndex: 0
-      addedObject: {fileID: 2091120067978870244}
+      addedObject: {fileID: 2792444383555750846}
+    - targetCorrespondingSourceObject: {fileID: 418565016112856912, guid: 14a7696a46fea2e458ee9c5bad3872e0,
+        type: 3}
+      insertIndex: 1
+      addedObject: {fileID: 6147017581532993487}
   m_SourcePrefab: {fileID: 100100000, guid: 14a7696a46fea2e458ee9c5bad3872e0, type: 3}
 --- !u!4 &9148034359409785771 stripped
 Transform:

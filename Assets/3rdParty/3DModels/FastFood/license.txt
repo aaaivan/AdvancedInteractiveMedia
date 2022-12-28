@@ -1,0 +1,11 @@
+Model Information:
+* title:	Fast Food Set
+* source:	https://sketchfab.com/3d-models/fast-food-set-50665c944e4e4979b9df5582b393a2b2
+* author:	Ah Xun (https://sketchfab.com/leesection)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Fast Food Set" (https://sketchfab.com/3d-models/fast-food-set-50665c944e4e4979b9df5582b393a2b2) by Ah Xun (https://sketchfab.com/leesection) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
