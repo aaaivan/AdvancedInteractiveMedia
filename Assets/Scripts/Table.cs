@@ -158,6 +158,7 @@ public class Table : MonoBehaviour, InteractableObject
 			{
 				FoodOnTableManager f = m.GetComponent<CustomerAI>().Chair.FoodOnTable;
 				f.AddFood(food);
+				m.OrderUI.HideFood(food.ItemData.item);
 				found = true;
 				break;
 			}

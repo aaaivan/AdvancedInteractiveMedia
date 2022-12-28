@@ -14,6 +14,7 @@ public class CustomerOptions : MonoBehaviour
 	}
 
 	List<PubMenuItemData> order = new List<PubMenuItemData>();
+	public List<PubMenuItemData> Order { get { return order; } }
 
 	private void Start()
 	{
@@ -56,7 +57,6 @@ public class CustomerOptions : MonoBehaviour
 		if (_items.Count != order.Count)
 			return false;
 
-		order.Sort((a, b) => (a.item.CompareTo(b.item)));
 		_items.Sort((a, b) => (a.item.CompareTo(b.item)));
 
 		for(int i = 0; i < order.Count; ++i)

@@ -26,6 +26,9 @@ public class NewOrderDialog : FluentScript, InteractableObject
 	const string paymentAnim = "DoPayment";
 	const string pickUpAnim = "DoPickUp";
 
+	[SerializeField]
+	UI_OrderPanel orderUI;
+
 	private void OnEnable()
 	{
 		UI_OrderItemsList.OnPaymentReady += PaymentHandler;
@@ -141,6 +144,7 @@ public class NewOrderDialog : FluentScript, InteractableObject
 			Write(Eval(() => "Can I have " + orderOptions.GetOrderString() + ", please?")).WaitForButton() *
 
 			Hide() *
+			Do(() => orderUI.ShowOrder()) *
 			Do(() => animator.SetBool(speakingAnim, false)) *
 
 			Do(() => isReadyToPay = false) *
@@ -201,6 +205,7 @@ public class NewOrderDialog : FluentScript, InteractableObject
 			Do(() => animator.SetTrigger(pickUpAnim)) *
 			ContinueWhen(() => hasPickedUpDrink) *
 			Do(() => GetDrinkOnMat().transform.parent = transform.Find("Inventory")) *
+			Do(() => orderUI.HideFood(orderOptions.GetDrink().item)) *
 
 			Show() *
 			Do(() => DialogManager.Instance.SetSpeaker("Customer")) *

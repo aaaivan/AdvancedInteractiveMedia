@@ -40,4 +40,5 @@ public class PubMenuItemData
 	public float prepTime;
 	public float timeToEat;
 	public GameObject prefab;
+	public Sprite image;
 }
