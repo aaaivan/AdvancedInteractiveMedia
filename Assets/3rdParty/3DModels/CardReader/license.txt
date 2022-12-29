@@ -1,0 +1,11 @@
+Model Information:
+* title:	Card Reader
+* source:	https://sketchfab.com/3d-models/card-reader-3e1e65fa70574e4b92cc37120ec03816
+* author:	Nicole Harris (https://sketchfab.com/16nharris)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Card Reader" (https://sketchfab.com/3d-models/card-reader-3e1e65fa70574e4b92cc37120ec03816) by Nicole Harris (https://sketchfab.com/16nharris) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

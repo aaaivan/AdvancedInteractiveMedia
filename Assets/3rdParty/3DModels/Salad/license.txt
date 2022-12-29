@@ -1,0 +1,11 @@
+Model Information:
+* title:	Bowl with salad
+* source:	https://sketchfab.com/3d-models/bowl-with-salad-5c7cbb0ccf02424f8c19f8ceb16c259e
+* author:	1-3D.com (https://sketchfab.com/1-3D.com)
+
+Model License:
+* license type:	CC-BY-SA-4.0 (http://creativecommons.org/licenses/by-sa/4.0/)
+* requirements:	Author must be credited. Modified versions must have the same license. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Bowl with salad" (https://sketchfab.com/3d-models/bowl-with-salad-5c7cbb0ccf02424f8c19f8ceb16c259e) by 1-3D.com (https://sketchfab.com/1-3D.com) licensed under CC-BY-SA-4.0 (http://creativecommons.org/licenses/by-sa/4.0/)
