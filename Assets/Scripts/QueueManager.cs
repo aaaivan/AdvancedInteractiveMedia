@@ -204,4 +204,9 @@ public class QueueManager : MonoBehaviour
 
 		return queuePositions[queueLength];
 	}
+
+	public int FreeSpotsInQueue()
+	{
+		return queuePositions.Length - queueLength;
+	}
 }

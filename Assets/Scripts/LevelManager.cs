@@ -83,6 +83,10 @@ public class LevelManager : MonoBehaviour
 			lastSpawnTime = Time.time;
 			int numCustomers = UnityEngine.Random.Range(1, 3);
 			numCustomers = Math.Min(numCustomers, customerPrefabs.Count - nextCustomer);
+			numCustomers = Math.Min(numCustomers, QueueManager.Instance.FreeSpotsInQueue());
+
+			if (numCustomers == 0)
+				return;
 
 			Table table = null;
 			foreach(Table t in tables)
