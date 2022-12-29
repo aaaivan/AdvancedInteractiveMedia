@@ -102809,7 +102809,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8e18bd34b3fccd46b0c0554d232f042, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnTimeInterval: 10
+  spawnTimeInterval: 60
   drinksMat: {fileID: 2056243409}
   exitTablet: {fileID: 286493284}
   entrance: {fileID: 80308215}
@@ -102822,7 +102822,14 @@ MonoBehaviour:
   - {fileID: 1894899155}
   - {fileID: 1975456008}
   customerPrefabs:
+  - {fileID: 7082178953787369788, guid: c434686b9623d1f44b13fddb97c079cd, type: 3}
+  - {fileID: 3228555112128694697, guid: 1d1b5ab4e3600cd4eb38e379b006d522, type: 3}
+  - {fileID: 8943961490313702713, guid: a862407c3f5c56c4090802c524d823c1, type: 3}
+  - {fileID: 3980650642994542551, guid: d6c81ec005c17884cb6e9ccde65378c7, type: 3}
   - {fileID: 2070135289904603603, guid: c336d3c583af0964d9403420cce2aa03, type: 3}
+  - {fileID: 1067583176655093450, guid: 84a68a0dd06a9fc4ab911eb5a34a4cc5, type: 3}
+  - {fileID: 4293487851620972428, guid: 90d0f243b8a215348937b731faa3bed3, type: 3}
+  - {fileID: 7115416739634388134, guid: e8dba16c1a65eb84f9319424f0505627, type: 3}
   farFarAway: {fileID: 1701095853}
   HudCanvas: {fileID: 97151231}
   EndGameCanvas: {fileID: 1729963036}
