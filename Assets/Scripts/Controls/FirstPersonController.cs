@@ -303,6 +303,9 @@ namespace StarterAssets
 
 		public void DisableGameInputs()
 		{
+			if (!AreGameInputsEnabled())
+				return;
+
 			PlayerInput input = GetComponent<PlayerInput>();
 			input.actions.Disable();
 			_speed = 0;
@@ -313,6 +316,9 @@ namespace StarterAssets
 		}
 		public void EnableGameInputs()
 		{
+			if (AreGameInputsEnabled())
+				return;
+
 			PlayerInput input = GetComponent<PlayerInput>();
 			input.actions.Enable();
 			_ignoreInput = false;

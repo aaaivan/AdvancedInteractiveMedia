@@ -58,9 +58,6 @@ public class InputsManager : MonoBehaviour
 
 	void EnablePlayerMovement()
 	{
-		if (firstPersonController.AreGameInputsEnabled())
-			return;
-
 		GameObject player = firstPersonController.gameObject;
 		StarterAssetsInputs inputs = player.GetComponent<StarterAssetsInputs>();
 		if (Input.mousePresent)
