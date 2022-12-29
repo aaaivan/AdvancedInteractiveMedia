@@ -15,9 +15,4 @@ public class UI_EndGameScreen : MonoBehaviour
 		InputsManager.Instance.EnableInputsByType(InputsManager.InputsType.UserInterface);
 		scoreText.text = string.Format(scoreString, LevelManager.Instance.Score.ToString("0.00"));
 	}
-
-	public void QuitToMainMenu()
-	{
-		SceneManager.LoadScene(0);
-	}
 }
