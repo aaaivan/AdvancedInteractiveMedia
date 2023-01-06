@@ -34,6 +34,8 @@ public class LevelManager : MonoBehaviour
 	[SerializeField]
 	Canvas HudCanvas;
 	[SerializeField]
+	TMP_Text skipToEndText;
+	[SerializeField]
 	Canvas EndGameCanvas;
 	[SerializeField]
 	TMP_Text scoreText;
@@ -41,6 +43,7 @@ public class LevelManager : MonoBehaviour
 	float score = 0f;
 	public float Score { get { return score; } }
 	int customersLeft = 0;
+	bool canFastForward = false;
 
 	static LevelManager instance;
 	public static LevelManager Instance { get { return instance; } }
@@ -114,6 +117,30 @@ public class LevelManager : MonoBehaviour
 
 			StartCoroutine(SpawnCustomersCoroutine(table, numCustomers));
 		}
+
+		if (nextCustomer == customerPrefabs.Count && !canFastForward)
+		{
+			canFastForward = true;
+			foreach (Table table in tables)
+			{
+				if (!table.HasAllFoodBeenDeliveredToTable())
+				{
+					canFastForward = false;
+					break;
+				}
+			}
+		}
+		if(canFastForward && Time.timeScale == 1)
+		{
+			skipToEndText.gameObject.SetActive(true);
+			if (Input.GetKeyUp(KeyCode.F))
+			{
+				skipToEndText.gameObject.SetActive(false);
+				Time.timeScale = 5.0f;
+				InputsManager.Instance.DisableInputsByType(InputsManager.InputsType.Gameplay);
+				InputsManager.Instance.DisableInputsByType(InputsManager.InputsType.Tablet);
+			}
+		}
 	}
 
 	IEnumerator SpawnCustomersCoroutine(Table table, int numberOfCustomers)
@@ -138,6 +165,7 @@ public class LevelManager : MonoBehaviour
 		--customersLeft;
 		if(customersLeft == 0)
 		{
+			Time.timeScale = 1.0f;
 			HudCanvas.gameObject.SetActive(false);
 			EndGameCanvas.gameObject.SetActive(true);
 		}

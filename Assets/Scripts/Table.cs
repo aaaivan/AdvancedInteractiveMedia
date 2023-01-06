@@ -148,6 +148,19 @@ public class Table : MonoBehaviour, InteractableObject
 		return null;
 	}
 
+	public bool HasAllFoodBeenDeliveredToTable()
+	{
+		foreach (Chair c in chairs)
+		{
+			if (c.SeatedCustomer != null)
+			{
+				if (c.SeatedCustomer.GetComponent<MealConsumption>().IsOrderComplete == false)
+					return false;
+			}
+		}
+		return true;
+	}
+
 	void OnFoodPutDownOnTable(PubMenuItem food)
 	{
 		List<MealConsumption> meals = new List<MealConsumption>();

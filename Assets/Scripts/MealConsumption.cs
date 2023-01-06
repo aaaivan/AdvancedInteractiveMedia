@@ -11,6 +11,7 @@ public class MealConsumption : MonoBehaviour
 	bool hasFinishedEating = false;
 	bool isOrderComplete = false;
 	public bool HasFinishedEating { get { return hasFinishedEating; } }
+	public bool IsOrderComplete { get { return isOrderComplete; } }
 
 	[SerializeField]
 	UI_OrderPanel orderUI;
