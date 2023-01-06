@@ -14,6 +14,8 @@ public class Chair : MonoBehaviour
 	Vector3 farPosition; // position when the chair is far from the table
 	Vector3 closePosition; // position when the chair is close to the table
 	Vector3 halfwayPosition = Vector3.zero;
+	Transform standingPos;
+	public Transform StandingPos { get { return standingPos; } }
 	Transform pivot;
 
 	public delegate void SitDownHandler(CustomerAI c);
@@ -35,6 +37,7 @@ public class Chair : MonoBehaviour
 	{
 		farPosition = transform.position;
 		closePosition = transform.Find("EndPos").position;
+		standingPos = transform.Find("Pivot/StandingPos");
 		pivot = transform.Find("Pivot");
 		table = transform.parent.parent.GetComponent<Table>();
 		foodOntable = transform.parent.Find("FoodLocation").GetComponent<FoodOnTableManager>();
@@ -160,9 +163,10 @@ public class Chair : MonoBehaviour
 		Animator anim = customer.GetComponent<Animator>();
 		if (anim != null)
 			anim.SetBool("IsSitting", false);
-		yield return new WaitForSeconds(2.5f);
+		yield return new WaitForSeconds(2.2f);
+		customer.MovementController.SetAgentPosition(standingPos.position);
 
-		// notify the chair that the customer is sitting on it
+		// notify the chair that the customer is not sitting on it
 		SetIsCustomerSitting(false);
 
 		// move the chair off the customer's butt

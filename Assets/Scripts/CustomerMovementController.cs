@@ -72,7 +72,7 @@ public class CustomerMovementController : MonoBehaviour
 
 		while (isMoving)
 		{
-			while (!agent.hasPath)
+			while (!agent.hasPath || agent.pathPending)
 			{
 				// the path has not been calculated yet
 				yield return null;
@@ -211,5 +211,10 @@ public class CustomerMovementController : MonoBehaviour
 			SetDestination(_destination, _forwardVect);
 		else
 			destinationsList.Add(new Tuple<Vector3, Vector3>(_destination, _forwardVect));
+	}
+
+	public void SetAgentPosition(Vector3 pos)
+	{
+		agent.nextPosition = pos;
 	}
 }

@@ -7,7 +7,6 @@ public class CustomerAI : MonoBehaviour
 {
 	Chair chair; // chair game object
 	public Chair Chair{ get { return chair; } }
-	Transform chairStandingPos; // location where the customer should be standing before sitting on the chair
 
 	CustomerMovementController movementController;
 	public CustomerMovementController MovementController { get { return movementController; } }
@@ -81,8 +80,17 @@ public class CustomerAI : MonoBehaviour
 
 		chair = c;
 		chair.SetCustomer(transform);
-		chairStandingPos = chair.transform.Find("Pivot/StandingPos");
 		chair.OnStandUp += OnLeftChair;
+
+		Collider customerColl = GetComponent<Collider>();
+		Collider[] charColl = c.GetComponents<Collider>();
+		Collider tablleColl = c.Table.GetComponent<Collider>();
+
+		foreach (Collider coll in charColl)
+		{
+			Physics.IgnoreCollision(customerColl, coll, true);
+		}
+		Physics.IgnoreCollision(customerColl, tablleColl, true);
 	}
 
 	void UnsetChair()
@@ -105,7 +113,7 @@ public class CustomerAI : MonoBehaviour
 		if (state != CustomerState.Queuing && state != CustomerState.FrontOfTheQueue)
 			return;
 
-		QueueManager.Instance.RemoveFromQueue(this, chairStandingPos, CustomerState.MovingToTable);
+		QueueManager.Instance.RemoveFromQueue(this, chair.StandingPos, CustomerState.MovingToTable);
 		GetComponent<TipCalculator>().queuingTime = Time.time - startQueuingTime;
 	}
 

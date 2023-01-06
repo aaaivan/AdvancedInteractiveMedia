@@ -142,4 +142,14 @@ public class LevelManager : MonoBehaviour
 			EndGameCanvas.gameObject.SetActive(true);
 		}
 	}
+
+	public int GetTableNumber(Table table)
+	{
+		for(int i = 0; i < tables.Count; ++i)
+		{
+			if (tables[i] == table)
+				return i+1;
+		}
+		return 0;
+	}
 }

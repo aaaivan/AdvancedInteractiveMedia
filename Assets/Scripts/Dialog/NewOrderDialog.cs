@@ -206,11 +206,6 @@ public class NewOrderDialog : FluentScript, InteractableObject
 			ContinueWhen(() => hasPickedUpDrink) *
 			Do(() => GetDrinkOnMat().transform.parent = transform.Find("Inventory")) *
 			Do(() => orderUI.HideFood(orderOptions.GetDrink().item)) *
-
-			Show() *
-			Do(() => DialogManager.Instance.SetSpeaker("Customer")) *
-			Do(() => animator.SetBool(speakingAnim, true)) *
-			Write(2.0f, "Thank you.") *
 			
 			Hide() *
 			Do(() => animator.SetBool(speakingAnim, false)) *
