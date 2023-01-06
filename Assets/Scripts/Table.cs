@@ -86,7 +86,7 @@ public class Table : MonoBehaviour, InteractableObject
 	{
 		List<CustomerOptions> customers = new List<CustomerOptions>();
 
-		// find the customers that are sitting on a char at this table
+		// find the customers that are sitting on a chair at this table
 		foreach(Chair c in chairs)
 		{
 			if (c.HasCustomerArrived && c.SeatedCustomer != null)

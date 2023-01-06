@@ -138,7 +138,7 @@ public class UI_OrderItemsList : MonoBehaviour
 		clearOrderButton.gameObject.SetActive(true);
 	}
 
-	private void SubmitOrder()
+	public void SubmitOrder()
 	{
 		List<PubMenuItemData> orderItems = new List<PubMenuItemData>();
 		foreach (var orderItem in itemsInList)
